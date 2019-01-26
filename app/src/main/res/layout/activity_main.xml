@@ -35,18 +35,18 @@
             android:paddingBottom="9dp">
 
             <ImageView
-                android:id="@+id/bottom_item_map"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/google_maps_colores" />
-
-            <ImageView
                 android:id="@+id/bottom_item_bloques"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/edificios_outline" />
+
+            <ImageView
+                android:id="@+id/bottom_item_map"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/google_maps_colores" />
 
             <ImageView
                 android:id="@+id/bottom_item_noti"
