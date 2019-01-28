@@ -17,15 +17,21 @@ import helpers.cristian.com.ubiety.modelos.Bloque;
 
 public class BloquesAdapter extends RecyclerView.Adapter<BloquesAdapter.BloquesViewHolder> {
 
-    private ArrayList<Bloque> bloques;
-    private Context contexto;
-
-    public BloquesAdapter(ArrayList<Bloque> bloques, Context contexto) {
-        this.bloques = bloques;
-        this.contexto = contexto;
+    public interface ListenerClick {
+        void clickItemBoque(Bloque bloque, int posicion);
     }
 
-    public class BloquesViewHolder extends RecyclerView.ViewHolder {
+    private ArrayList<Bloque> bloques;
+    private Context contexto;
+    private ListenerClick listener;
+
+    public BloquesAdapter(ArrayList<Bloque> bloques, Context contexto, ListenerClick listener) {
+        this.bloques = bloques;
+        this.contexto = contexto;
+        this.listener = listener;
+    }
+
+    public class BloquesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final ImageView img;
         private final TextView txtNombre, txtCodigo, txtCantSalones;
@@ -37,6 +43,21 @@ public class BloquesAdapter extends RecyclerView.Adapter<BloquesAdapter.BloquesV
             txtNombre = itemView.findViewById(R.id.item_nombre_bloque);
             txtCodigo = itemView.findViewById(R.id.item_codigo_bloque);
             txtCantSalones = itemView.findViewById(R.id.item_cant_salones_bloque);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            if (listener != null ) {
+
+                switch ( view.getId() ) {
+                    case R.id.item_bloque:
+                        listener.clickItemBoque( bloques.get( getAdapterPosition() ), getAdapterPosition() );
+                        break;
+                }
+            }
         }
     }
 
@@ -53,8 +74,10 @@ public class BloquesAdapter extends RecyclerView.Adapter<BloquesAdapter.BloquesV
     public void onBindViewHolder(@NonNull BloquesViewHolder holder, int pos) {
         Bloque bloque = bloques.get(pos);
 
+        String urlImg = bloque.getUrlImagenes().size() > 0 ? bloque.getUrlImagenes().get(0) : "";
+
         GlideApp.with(contexto)
-                .load( bloque.getUrlImg() )
+                .load( urlImg )
                 .into( holder.img );
 
         holder.txtNombre.setText( bloque.getNombre() );
