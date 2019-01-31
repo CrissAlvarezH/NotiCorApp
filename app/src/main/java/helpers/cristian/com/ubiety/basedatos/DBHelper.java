@@ -9,9 +9,19 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String NOMBRE_DB = "ubietybd";
     private static final int VERSION_DB = 1;
 
-    public DBHelper(Context context) {
+    private static DBHelper instancia;
+
+    private DBHelper(Context context) {
         super(context, NOMBRE_DB, null, VERSION_DB);
     }
+
+    public static synchronized DBHelper getInstancia(Context contexto) {
+        if(instancia == null)
+            instancia = new DBHelper(contexto.getApplicationContext());
+
+        return instancia;
+    }
+
 
     // [ INICIO ] CONSTANTES PARA EL MANEJO DE LAS TABLAS
     public static final String TABLA_NOTIFICACIONES = "notificaciones";

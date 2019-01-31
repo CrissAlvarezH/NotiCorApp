@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1087121383091",
+    "firebase_url": "https://ubiety-50425.firebaseio.com",
+    "project_id": "ubiety",
+    "storage_bucket": "ubiety.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087121383091:android:078996250cc68565",
+        "android_client_info": {
+          "package_name": "helpers.cristian.com.ubiety"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087121383091-vf3s1akm3mseldqd0q424i2em5eiq8cc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqPX3WBHBoAD6dTeo3CL659KkJhYShPkg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
