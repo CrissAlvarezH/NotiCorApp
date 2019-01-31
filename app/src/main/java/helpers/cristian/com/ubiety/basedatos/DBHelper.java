@@ -20,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLA_POSICIONES = "posiciones";
     public static final String TABLA_IMAGENES = "imagenes";
     public static final String TABLA_IMAGEN_BLOQUE = "imagen_bloque";
+    public static final String TABLA_FACULTADES = "facultades";
 
     public static final String ID = "id";
     public static final String TITULO = "titulo";
@@ -42,6 +43,19 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        /*
+         * Estos datos se utilizaran para los tabs principales, para que haya un información
+         * guardad en el dispositivo y así los usuarios no tenga que esperar a que cargue cada vez
+         * que elijen un tab, la información mostrada de ahí en adelante, como lo detalles de los bloques,
+         * de las facultades, etc.. serán cargadas al servidor
+         */
+
+        String CREAR_TABLA_FACULTADES = "CREATE TABLE "+TABLA_FACULTADES+" ( " +
+                ID + " INTEGER PRIMARY KEY, " +
+                NOMBRE + " TEXT NOT NULL, " +
+                DESCRIPCION + " TEXT NOT NULL " +
+                ");";
+
         String CREAR_TABLA_NOTIFICACIONES = "CREATE TABLE "+TABLA_NOTIFICACIONES+" ( " +
                 ID + " INTEGER PRIMARY KEY, " +
                 TITULO + " TEXT NOT NULL, " +
@@ -52,7 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 ");";
 
         String CREAR_TABLA_BLOQUE = "CREATE TABLE "+TABLA_BLOQUES+" ( " +
-                ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                ID + " INTEGER PRIMARY KEY," +
                 NOMBRE + " TEXT NOT NULL, " +
                 CODIGO + " TEXT NOT NULL, " +
                 ID_ZONA + " INTEGER NOT NULL, " +
@@ -62,18 +76,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 ");";
 
         String CREAR_TABLA_ZONA = "CREATE TABLE "+TABLA_ZONAS+" ( " +
-                ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                ID + " INTEGER PRIMARY KEY," +
                 NOMBRE + " TEXT NOT NULL " +
                 ");";
 
         String CREAR_TABLA_POSICIONES = "CREATE TABLE "+TABLA_POSICIONES+" ( " +
-                ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                ID + " INTEGER PRIMARY KEY," +
                 LATITUD + " DOUBLE NOT NULL, " +
                 LONGITUD + " DOUBLE NOT NULL " +
                 ");";
 
         String CREAR_TABLA_IMAGENES = "CREATE TABLE "+TABLA_IMAGENES+" ( " +
-                ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                ID + " INTEGER PRIMARY KEY," +
                 URL + " TEXT NOT NULL, " +
                 FECHA_TOMADA + " TEXT NOT NULL, " +
                 "FOREIGN KEY("+ID_POSICION+") REFERENCES "+TABLA_POSICIONES+"("+ID+") " +
@@ -86,6 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY("+ID_BLOQUE+") REFERENCES "+TABLA_BLOQUES+"("+ID+") " +
                 ");";
 
+        db.execSQL(CREAR_TABLA_FACULTADES);
         db.execSQL(CREAR_TABLA_NOTIFICACIONES);
         db.execSQL(CREAR_TABLA_BLOQUE);
         db.execSQL(CREAR_TABLA_ZONA);

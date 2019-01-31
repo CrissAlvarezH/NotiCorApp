@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 
 import helpers.cristian.com.ubiety.R;
 
@@ -39,6 +42,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mapa = googleMap;
         mapa.getUiSettings().setMapToolbarEnabled(false);
+
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(8.7896982,-75.8596016), 15));
     }
 
     @Override
