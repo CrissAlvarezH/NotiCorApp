@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="2dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginBottom="4dp"
+    android:layout_margin="2dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:background="?android:attr/selectableItemBackground"
+            android:id="@+id/layout_item_facultad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/item_facultad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="Ingenierias"
+                android:textColor="@android:color/black"
+                android:textSize="16dp" />
+
+
+            <ImageView
+                android:id="@+id/item_img_updown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/item_facultad"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_flecha_left" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_carreras"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            tools:listitem="@layout/item_carrera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

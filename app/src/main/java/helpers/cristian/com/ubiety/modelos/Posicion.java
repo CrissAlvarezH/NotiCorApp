@@ -1,8 +1,15 @@
 package helpers.cristian.com.ubiety.modelos;
 
+import android.content.ContentValues;
+
 import java.io.Serializable;
 
-public class Posicion implements Serializable {
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.LATITUD;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.LONGITUD;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_POSICIONES;
+
+public class Posicion implements Serializable, ModeloBaseDatos {
     private int id;
     private double latitud;
     private double longitud;
@@ -11,6 +18,22 @@ public class Posicion implements Serializable {
         this.id = id;
         this.latitud = latitud;
         this.longitud = longitud;
+    }
+
+    @Override
+    public ContentValues toContentValues() {
+        ContentValues values = new ContentValues();
+
+        values.put(ID, id);
+        values.put(LATITUD, latitud);
+        values.put(LONGITUD, longitud);
+
+        return values;
+    }
+
+    @Override
+    public String getNombreTabla() {
+        return TABLA_POSICIONES;
     }
 
     public int getId() {
@@ -36,4 +59,6 @@ public class Posicion implements Serializable {
     public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
+
+
 }

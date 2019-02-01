@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_carrera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:text="Ingenieria de Sistemas"
+        android:textColor="#393939"
+        android:textSize="14dp" />
+
+    <View
+        android:background="#e1c4c4c4"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
+
+</LinearLayout>

@@ -2,19 +2,23 @@ package helpers.cristian.com.ubiety.modelos;
 
 import android.content.ContentValues;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRE;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_ZONAS;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_FACULTADES;
 
-public class Zona implements Serializable, ModeloBaseDatos {
+public class Facultad implements ModeloBaseDatos {
     private int id;
     private String nombre;
+    private boolean mostrarCarreras;
+    private ArrayList<Carrera> carreras;
 
-    public Zona(int id, String nombre) {
+    public Facultad(int id, String nombre, ArrayList<Carrera> carreras, boolean mostrarCarreras) {
         this.id = id;
         this.nombre = nombre;
+        this.mostrarCarreras = mostrarCarreras;
+        this.carreras = carreras;
     }
 
     @Override
@@ -29,7 +33,23 @@ public class Zona implements Serializable, ModeloBaseDatos {
 
     @Override
     public String getNombreTabla() {
-        return TABLA_ZONAS;
+        return TABLA_FACULTADES;
+    }
+
+    public boolean isMostrarCarreras() {
+        return mostrarCarreras;
+    }
+
+    public void setMostrarCarreras(boolean mostrarCarreras) {
+        this.mostrarCarreras = mostrarCarreras;
+    }
+
+    public ArrayList<Carrera> getCarreras() {
+        return carreras;
+    }
+
+    public void setCarreras(ArrayList<Carrera> carreras) {
+        this.carreras = carreras;
     }
 
     public int getId() {

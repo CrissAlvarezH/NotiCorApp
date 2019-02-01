@@ -1,57 +1,36 @@
 package helpers.cristian.com.ubiety.modelos;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import java.io.Serializable;
-import java.util.ArrayList;
 
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.DESCRIPCION;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.ENLACE;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.FECHA;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.HORA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_NOTICIAS;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TIPO;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TITULO;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.URL_IMAGEN;
 
-
-public class Notificacion implements Serializable, ModeloBaseDatos {
+public class Noticia implements ModeloBaseDatos {
     private int id;
-    private int tipo;
+    private String urlImagen;
     private String titulo;
     private String descripcion;
     private String fecha;
-    private String hora;
-
-    public Notificacion(int tipo, String titulo, String descripcion, String fecha, String hora) {
-        this.tipo = tipo;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.fecha = fecha;
-        this.hora = hora;
-    }
-
-    public Notificacion(int id, int tipo, String titulo, String descripcion, String fecha, String hora) {
-        this.id = id;
-        this.tipo = tipo;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.fecha = fecha;
-        this.hora = hora;
-    }
+    private String enlace;
+    private String tipo;
 
     @Override
     public ContentValues toContentValues() {
         ContentValues values = new ContentValues();
 
         values.put(ID, id);
+        values.put(URL_IMAGEN, urlImagen);
         values.put(TITULO, titulo);
         values.put(DESCRIPCION, descripcion);
-        values.put(TIPO, tipo);
         values.put(FECHA, fecha);
-        values.put(HORA, hora);
+        values.put(ENLACE, enlace);
+        values.put(TIPO, tipo);
 
         return values;
     }
@@ -61,10 +40,9 @@ public class Notificacion implements Serializable, ModeloBaseDatos {
         return TABLA_NOTICIAS;
     }
 
-    public static class Tipos {
-        public static final int NOTICIA = 1;
-        public static final int ADVERTENCIA = 2;
-        public static final int PELIGRO = 3;
+    public interface Tipos {
+        String BANNER = "Banner";
+        String NOTICIA = "Noticia";
     }
 
     public int getId() {
@@ -75,12 +53,12 @@ public class Notificacion implements Serializable, ModeloBaseDatos {
         this.id = id;
     }
 
-    public int getTipo() {
-        return tipo;
+    public String getUrlImagen() {
+        return urlImagen;
     }
 
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
 
     public String getTitulo() {
@@ -107,13 +85,19 @@ public class Notificacion implements Serializable, ModeloBaseDatos {
         this.fecha = fecha;
     }
 
-    public String getHora() {
-        return hora;
+    public String getEnlace() {
+        return enlace;
     }
 
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setEnlace(String enlace) {
+        this.enlace = enlace;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
 
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 }
