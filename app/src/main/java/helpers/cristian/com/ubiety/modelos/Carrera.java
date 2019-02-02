@@ -2,6 +2,7 @@ package helpers.cristian.com.ubiety.modelos;
 
 import android.content.ContentValues;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
@@ -9,10 +10,12 @@ import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID_FACULTAD;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRE;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_CARRERAS;
 
-public class Carrera implements ModeloBaseDatos {
+public class Carrera implements ModeloBaseDatos, Serializable {
+
+    public static final String CLASS_NAME = "carrera";
+
     private int id;
     private String nombre;
-    private ArrayList<Noticia> noticias;
     private int idFacultad;
 
     public Carrera(int id, String nombre) {
@@ -42,14 +45,6 @@ public class Carrera implements ModeloBaseDatos {
 
     public void setIdFacultad(int idFacultad) {
         this.idFacultad = idFacultad;
-    }
-
-    public ArrayList<Noticia> getNoticias() {
-        return noticias;
-    }
-
-    public void setNoticias(ArrayList<Noticia> noticias) {
-        this.noticias = noticias;
     }
 
     public int getId() {

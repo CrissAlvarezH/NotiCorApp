@@ -1,6 +1,7 @@
 package helpers.cristian.com.ubiety.fragmentos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import helpers.cristian.com.ubiety.NoticiasCarreraActivity;
 import helpers.cristian.com.ubiety.R;
 import helpers.cristian.com.ubiety.adapter.CarrerasAdapter;
 import helpers.cristian.com.ubiety.adapter.FacultadesAdapter;
@@ -77,7 +79,9 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
 
     @Override
     public void clickCarrera(Carrera carrera, int posicion) {
-        Toast.makeText(getContext(), "Click a "+carrera.getNombre(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), NoticiasCarreraActivity.class);
+        intent.putExtra(Carrera.CLASS_NAME, carrera);
+        startActivity(intent);
     }
 
     @Override

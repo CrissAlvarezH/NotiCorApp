@@ -33,7 +33,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLA_FACULTADES = "facultades";
     public static final String TABLA_CARRERAS = "carreras";
     public static final String TABLA_NOTICIAS = "noticias";
-    public static final String TABLA_NOTICIAS_CARRERA = "noticia_carrera";
 
     public static final String ID = "id";
     public static final String TITULO = "titulo";
@@ -53,8 +52,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String ID_IMAGEN = "id_imagen";
     public static final String ID_ZONA = "id_zona";
     public static final String ID_POSICION = "id_posicion";
-    public static final String ID_NOTICIA = "id_noticia";
-    public static final String ID_CARRERA = "id_carrera";
     public static final String ID_FACULTAD = "id_facultad";
     // [ FIN ] CONSTANTES PARA EL MANEJO DE LAS TABLAS
 
@@ -78,23 +75,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 NOMBRE + " TEXT NOT NULL, " +
                 ID_FACULTAD + " INTEGER NOT NULL, " +
                 "FOREIGN KEY("+ID_FACULTAD+") REFERENCES "+TABLA_FACULTADES+"("+ID+") " +
-                ");";
-
-        String CREAR_TABLA_NOTICIAS = "CREATE TABLE "+TABLA_NOTICIAS+" ( " +
-                ID + " INTEGER PRIMARY KEY, " +
-                URL_IMAGEN + " TEXT, " +
-                TITULO + " TEXT, " +
-                DESCRIPCION + " TEXT, " +
-                FECHA + " TEXT, " +
-                ENLACE + " TEXT, " +
-                TIPO + " TEXT " + // Tipos: Banner ó Noticia (Banner es solo una imagen)
-                ");";
-
-        String CREAR_TABLA_NOTICIAS_CARRERA = "CREATE TABLE "+TABLA_NOTICIAS_CARRERA+" ( " +
-                ID_NOTICIA + " INTEGER NOT NULL, " +
-                ID_CARRERA + " INTEGER NOT NULL, " +
-                "FOREIGN KEY("+ID_NOTICIA+") REFERENCES "+TABLA_NOTICIAS+"("+ID+"), " +
-                "FOREIGN KEY("+ID_CARRERA+") REFERENCES "+TABLA_CARRERAS+"("+ID+") " +
                 ");";
 
         String CREAR_TABLA_NOTIFICACIONES = "CREATE TABLE "+TABLA_NOTIFICACIONES+" ( " +
@@ -149,8 +129,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREAR_TABLA_IMAGENES);
         db.execSQL(CREAR_TABLA_IMAGEN_BLOQUE);
         db.execSQL(CREAR_TABLA_CARRERAS);
-        db.execSQL(CREAR_TABLA_NOTICIAS);
-        db.execSQL(CREAR_TABLA_NOTICIAS_CARRERA);
 
     }
 

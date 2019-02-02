@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <service android:name=".services.MensajeFirebaseService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -22,7 +21,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDnljdkxRS5911zkLlKWht3XPzeS8pnfmQ" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="canal" />
@@ -36,7 +34,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BloqueActivity"></activity>
+        <activity android:name=".BloqueActivity" />
+        <activity android:name=".NoticiasCarreraActivity"></activity>
     </application>
 
 </manifest>

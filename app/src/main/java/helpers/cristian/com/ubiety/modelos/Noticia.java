@@ -2,6 +2,8 @@ package helpers.cristian.com.ubiety.modelos;
 
 import android.content.ContentValues;
 
+import java.io.Serializable;
+
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.DESCRIPCION;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ENLACE;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.FECHA;
@@ -11,7 +13,7 @@ import static helpers.cristian.com.ubiety.basedatos.DBHelper.TIPO;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TITULO;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.URL_IMAGEN;
 
-public class Noticia implements ModeloBaseDatos {
+public class Noticia implements Serializable {
     private int id;
     private String urlImagen;
     private String titulo;
@@ -20,24 +22,15 @@ public class Noticia implements ModeloBaseDatos {
     private String enlace;
     private String tipo;
 
-    @Override
-    public ContentValues toContentValues() {
-        ContentValues values = new ContentValues();
-
-        values.put(ID, id);
-        values.put(URL_IMAGEN, urlImagen);
-        values.put(TITULO, titulo);
-        values.put(DESCRIPCION, descripcion);
-        values.put(FECHA, fecha);
-        values.put(ENLACE, enlace);
-        values.put(TIPO, tipo);
-
-        return values;
-    }
-
-    @Override
-    public String getNombreTabla() {
-        return TABLA_NOTICIAS;
+    public Noticia(int id, String urlImagen, String titulo, String descripcion,
+                   String fecha, String enlace, String tipo) {
+        this.id = id;
+        this.urlImagen = urlImagen;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
+        this.enlace = enlace;
+        this.tipo = tipo;
     }
 
     public interface Tipos {
