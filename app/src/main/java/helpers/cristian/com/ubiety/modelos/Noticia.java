@@ -4,14 +4,6 @@ import android.content.ContentValues;
 
 import java.io.Serializable;
 
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.DESCRIPCION;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.ENLACE;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.FECHA;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_NOTICIAS;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.TIPO;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.TITULO;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.URL_IMAGEN;
 
 public class Noticia implements Serializable {
     private int id;
@@ -20,10 +12,10 @@ public class Noticia implements Serializable {
     private String descripcion;
     private String fecha;
     private String enlace;
-    private String tipo;
+    private int tipo;
 
     public Noticia(int id, String urlImagen, String titulo, String descripcion,
-                   String fecha, String enlace, String tipo) {
+                   String fecha, String enlace, int tipo) {
         this.id = id;
         this.urlImagen = urlImagen;
         this.titulo = titulo;
@@ -34,8 +26,8 @@ public class Noticia implements Serializable {
     }
 
     public interface Tipos {
-        String BANNER = "Banner";
-        String NOTICIA = "Noticia";
+        int BANNER = 1;
+        int NOTICIA = 2;
     }
 
     public int getId() {
@@ -86,11 +78,11 @@ public class Noticia implements Serializable {
         this.enlace = enlace;
     }
 
-    public String getTipo() {
+    public int getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(int tipo) {
         this.tipo = tipo;
     }
 }

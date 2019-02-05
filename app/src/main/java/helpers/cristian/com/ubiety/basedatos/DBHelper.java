@@ -110,8 +110,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String CREAR_TABLA_IMAGENES = "CREATE TABLE "+TABLA_IMAGENES+" ( " +
                 ID + " INTEGER PRIMARY KEY," +
                 URL + " TEXT NOT NULL, " +
-                FECHA_TOMADA + " TEXT NOT NULL, " +
-                "FOREIGN KEY("+ID_POSICION+") REFERENCES "+TABLA_POSICIONES+"("+ID+") " +
+                FECHA_TOMADA + " TEXT NOT NULL " +
                 ");";
 
         String CREAR_TABLA_IMAGEN_BLOQUE = "CREATE TABLE "+TABLA_IMAGEN_BLOQUE+" ( " +

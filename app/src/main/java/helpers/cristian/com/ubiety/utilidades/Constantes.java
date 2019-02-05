@@ -8,4 +8,9 @@ public class Constantes {
         String ACTUALIZAR_TOKEN = "";
     }
 
+    public interface Acciones {
+        String ACTUALIZAR_NOTIFICACIONES = "actualizarnotificaciones";
+        String AGREGAR_NOTIFICACION = "agregarnotificacion";
+    }
+
 }

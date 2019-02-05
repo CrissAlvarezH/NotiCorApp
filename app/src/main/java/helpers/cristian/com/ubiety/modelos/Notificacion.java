@@ -12,7 +12,7 @@ import static helpers.cristian.com.ubiety.basedatos.DBHelper.DESCRIPCION;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.FECHA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.HORA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_NOTICIAS;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_NOTIFICACIONES;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TIPO;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TITULO;
 
@@ -58,7 +58,7 @@ public class Notificacion implements Serializable, ModeloBaseDatos {
 
     @Override
     public String getNombreTabla() {
-        return TABLA_NOTICIAS;
+        return TABLA_NOTIFICACIONES;
     }
 
     public static class Tipos {

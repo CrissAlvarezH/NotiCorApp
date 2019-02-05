@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import helpers.cristian.com.ubiety.R;
 import helpers.cristian.com.ubiety.adapter.NotificacionAdapter;
+import helpers.cristian.com.ubiety.basedatos.DBManager;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
 
 
@@ -21,30 +22,36 @@ public class NotificacionesFragment extends Fragment implements NotificacionAdap
 
     private RecyclerView recyclerNotis;
     private NotificacionAdapter notiAdapter;
+    private DBManager dbManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vista = inflater.inflate(R.layout.fragment_notificaciones, container, false);
+        dbManager = new DBManager(getContext());
 
         recyclerNotis = vista.findViewById(R.id.recycler_notis);
 
         RecyclerView.LayoutManager lmNotis = new LinearLayoutManager(getContext());
         recyclerNotis.setLayoutManager(lmNotis);
 
-        ArrayList<Notificacion> notificaciones = new ArrayList<>();
-        notificaciones.add( new Notificacion(1, Notificacion.Tipos.ADVERTENCIA, "Ajá, advertencia", "Esta es una advertencia, pila pues", "2019-02-03", "01:06" ) );
-        notificaciones.add( new Notificacion(1, Notificacion.Tipos.ADVERTENCIA, "Ajá, advertencia", "Esta es una advertencia, pila pues", "2019-02-03", "03:16" ) );
-        notificaciones.add( new Notificacion(1, Notificacion.Tipos.NOTICIA, "Ajá, Noticias", "Esta es una noticia, pa' informarce", "2019-02-03", "01:06" ) );
-        notificaciones.add( new Notificacion(1, Notificacion.Tipos.ADVERTENCIA, "Ajá, advertencia", "Esta es una advertencia, pila pues", "2019-02-03", "07:32" ) );
-        notificaciones.add( new Notificacion(1, Notificacion.Tipos.PELIGRO, "Peligro pues", "¡Peligro en la U!", "2019-02-03", "06:00" ) );
 
-        notiAdapter = new NotificacionAdapter(notificaciones, this);
+        notiAdapter = new NotificacionAdapter(new ArrayList<Notificacion>(), this);
         recyclerNotis.setAdapter(notiAdapter);
+
+        refreshNotificaciones();
 
         return vista;
     }
 
+    public void refreshNotificaciones() {
+        ArrayList<Notificacion> notis = dbManager.getNotificaciones();
+        notiAdapter.setNotificaciones(notis);
+    }
+
+    public void addNotificacion(Notificacion noti) {
+        notiAdapter.agregarNotificacion(noti);
+    }
 
     @Override
     public void clickNotificacion(Notificacion notificacion, int posicion) {
