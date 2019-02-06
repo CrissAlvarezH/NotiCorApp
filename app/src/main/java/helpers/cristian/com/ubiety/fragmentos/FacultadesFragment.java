@@ -20,6 +20,7 @@ import helpers.cristian.com.ubiety.NoticiasCarreraActivity;
 import helpers.cristian.com.ubiety.R;
 import helpers.cristian.com.ubiety.adapter.CarrerasAdapter;
 import helpers.cristian.com.ubiety.adapter.FacultadesAdapter;
+import helpers.cristian.com.ubiety.basedatos.DBManager;
 import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Facultad;
 
@@ -29,6 +30,7 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
     private ViewPager pagerNoticias;
     private RecyclerView recyclerFacultades;
     private FacultadesAdapter facultadesAdapter;
+    private DBManager dbManager;
 
     public FacultadesFragment() {}
 
@@ -36,6 +38,7 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vista = inflater.inflate(R.layout.fragment_facultades, container, false);
+        dbManager = new DBManager(getContext());
 
         pagerNoticias = vista.findViewById(R.id.pager_noticias);
         recyclerFacultades = vista.findViewById(R.id.recycler_facultades);
@@ -44,30 +47,7 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
         recyclerFacultades.setLayoutManager(lmFacultades);
         recyclerFacultades.setNestedScrollingEnabled(false);
 
-        ArrayList<Facultad> facultades = new ArrayList<>();
-        ArrayList<Carrera> carreras = new ArrayList<>();
-        carreras.add(new Carrera(1, "Carrera 1"));
-        carreras.add(new Carrera(1, "Carrera 2"));
-        carreras.add(new Carrera(1, "Carrera 2"));
-
-        facultades.add(new Facultad(
-                1,
-                "Ingenierias",
-                carreras,
-                false
-        ));
-        facultades.add(new Facultad(
-                1,
-                "Ingenierias",
-                carreras,
-                false
-        ));
-        facultades.add(new Facultad(
-                1,
-                "Ingenierias",
-                carreras,
-                false
-        ));
+        ArrayList<Facultad> facultades = dbManager.getFacultades();
 
         facultadesAdapter = new FacultadesAdapter(getContext(), facultades, this, this);
         recyclerFacultades.setAdapter(facultadesAdapter);

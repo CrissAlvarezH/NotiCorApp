@@ -23,6 +23,12 @@ public class Carrera implements ModeloBaseDatos, Serializable {
         this.nombre = nombre;
     }
 
+    public Carrera(int id, String nombre, int idFacultad) {
+        this.id = id;
+        this.nombre = nombre;
+        this.idFacultad = idFacultad;
+    }
+
     @Override
     public ContentValues toContentValues() {
         ContentValues values = new ContentValues();

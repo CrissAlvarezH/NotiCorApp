@@ -18,20 +18,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
+import helpers.cristian.com.ubiety.basedatos.DBManager;
 import helpers.cristian.com.ubiety.fragmentos.BloquesFragment;
 import helpers.cristian.com.ubiety.fragmentos.FacultadesFragment;
 import helpers.cristian.com.ubiety.fragmentos.MapaFragment;
 import helpers.cristian.com.ubiety.fragmentos.NotificacionesFragment;
 import helpers.cristian.com.ubiety.glide.GlideApp;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
+import helpers.cristian.com.ubiety.servicioweb.ResServer;
+import helpers.cristian.com.ubiety.servicioweb.ServicioWeb;
+import helpers.cristian.com.ubiety.servicioweb.ServicioWebUtils;
 import helpers.cristian.com.ubiety.utilidades.Constantes;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
 
@@ -46,7 +56,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
 
+    private LinearLayout splash;
+    private RelativeLayout contenedor;
+
     private ReceiverPrincipal receiver;
+
+    private ServicioWeb servicioWeb;
+    private DBManager dbManager;
 
     @Override
     protected void onResume() {
@@ -72,6 +88,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dbManager = new DBManager(this);
+
         FirebaseMessaging.getInstance().subscribeToTopic("Estudiantes")
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -80,11 +98,15 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             }
         });
 
+        contenedor = findViewById(R.id.container);
+        splash = findViewById(R.id.splash);
         imgItemMapa = findViewById(R.id.bottom_item_map);
         imgItemFacultades = findViewById(R.id.bottom_item_facultades);
         imgItemBloques = findViewById(R.id.bottom_item_bloques);
         imgItemNoti = findViewById(R.id.bottom_item_noti);
         pager = findViewById(R.id.pager_pages);
+
+        pedirInfoInicial();
 
         imgItemMapa.setOnClickListener(this);
         imgItemFacultades.setOnClickListener(this);
@@ -307,6 +329,65 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
             }
         }
+    }
+
+    private void pedirInfoInicial() {
+        splash.setVisibility(View.VISIBLE);
+        contenedor.setVisibility(View.GONE);
+
+        servicioWeb = ServicioWebUtils.getServicioWeb(true);
+
+        Call<ResServer> resServerCall = servicioWeb.getInfoInicial();
+
+        resServerCall.enqueue(new Callback<ResServer>() {
+            @Override
+            public void onResponse(Call<ResServer> call, Response<ResServer> response) {
+
+                if ( response.isSuccessful() ) {
+                    final ResServer resServer = response.body();
+
+                    if ( resServer != null && resServer.isOkay() ) {
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dbManager.limpiarBD();
+
+                                dbManager.insertarFacultades( resServer.getFacultades() );
+                                dbManager.insertarNotificaciones( resServer.getNotificaciones() );
+                                dbManager.insertarCarreras( resServer.getCarreras() );
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        splash.setVisibility(View.GONE);
+                                        contenedor.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                            }
+                        }).start();
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "No se pudo actualizar la información", Toast.LENGTH_SHORT).show();
+
+                        splash.setVisibility(View.GONE);
+                        contenedor.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "No se pudo actualizar la información", Toast.LENGTH_SHORT).show();
+
+                    splash.setVisibility(View.GONE);
+                    contenedor.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResServer> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "No se pudo actualizar la información", Toast.LENGTH_SHORT).show();
+                splash.setVisibility(View.GONE);
+                contenedor.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
 
