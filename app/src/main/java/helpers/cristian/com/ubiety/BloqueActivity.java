@@ -11,7 +11,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -150,7 +149,7 @@ public class BloqueActivity extends AppCompatActivity implements OnMapReadyCallb
             super(fm);
 
             for (String url : urlImgs) {
-                fragmentos.add( ImagenFragment.getInstancia(url) );
+                fragmentos.add( ImagenFragment.getInstanciaBloque(url) );
             }
         }
 

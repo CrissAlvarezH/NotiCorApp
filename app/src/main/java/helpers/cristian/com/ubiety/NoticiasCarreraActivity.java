@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,12 @@ import helpers.cristian.com.ubiety.adapter.NoticiasAdapter;
 import helpers.cristian.com.ubiety.fragmentos.ImagenFragment;
 import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Noticia;
+import helpers.cristian.com.ubiety.servicioweb.ResServer;
+import helpers.cristian.com.ubiety.servicioweb.ServicioWeb;
+import helpers.cristian.com.ubiety.servicioweb.ServicioWebUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NoticiasCarreraActivity extends AppCompatActivity {
 
@@ -31,6 +38,9 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
     private RecyclerView recyclerNoticias;
     private NoticiasAdapter noticiasAdapter;
     private PagerBanners bannerAdapter;
+    private LinearLayout contenedor, cargando;
+
+    private ServicioWeb servicioWeb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,8 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
 
             setToolbar( carrera.getNombre() );
 
+            contenedor = findViewById(R.id.contenedor_noticias);
+            cargando = findViewById(R.id.layout_cargando_noticias);
             pagerBanners = findViewById(R.id.pager_banners_carrera);
             txtCantBanners = findViewById(R.id.txt_cant_banners_carrera);
             recyclerNoticias = findViewById(R.id.recycler_noticias_carreras);
@@ -52,46 +64,13 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
             recyclerNoticias.setLayoutManager(lmNoticias);
             recyclerNoticias.setNestedScrollingEnabled(false);
 
-            ArrayList<Noticia> noticias = new ArrayList<>();
-            noticias.add(new Noticia(
-                    1,
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWvODDXGaeQoFgAySH1IjHBZgZSuQfPnqP88JiPHb-ek96t7wi",
-                    "Primera hora, atención",
-                    "El dia de ayer a las 4 de la mañana se presentó una ardilla en el bosque buscando algo de comer.",
-                    "2019-09-02",
-                    "",
-                    Noticia.Tipos.NOTICIA
-            ));
-            noticias.add(new Noticia(
-                    1,
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWvODDXGaeQoFgAySH1IjHBZgZSuQfPnqP88JiPHb-ek96t7wi",
-                    "Primera hora, atención",
-                    "El dia de ayer a las 4 de la mañana se presentó una ardilla en el bosque buscando algo de comer.",
-                    "2019-09-02",
-                    "",
-                    Noticia.Tipos.NOTICIA
-            ));
-            noticias.add(new Noticia(
-                    1,
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWvODDXGaeQoFgAySH1IjHBZgZSuQfPnqP88JiPHb-ek96t7wi",
-                    "Primera hora, atención",
-                    "El dia de ayer a las 4 de la mañana se presentó una ardilla en el bosque buscando algo de comer.",
-                    "2019-09-02",
-                    "",
-                    Noticia.Tipos.NOTICIA
-            ));
-
-            noticiasAdapter = new NoticiasAdapter(noticias, this);
+            noticiasAdapter = new NoticiasAdapter(new ArrayList<Noticia>(), this);
             recyclerNoticias.setAdapter(noticiasAdapter);
 
-            ArrayList<String> urlImgs = new ArrayList<>();
-            urlImgs.add("https://stratto.weebly.com/uploads/1/3/6/6/13668912/55122_orig.jpg");
-            urlImgs.add("http://www.prensalibrecasanare.com/uploads/posts/2013-07/1375172099_aulas-inconclusas-jorge-eliecer-gaitan11.jpg");
-            urlImgs.add("https://www.elcomercio.com/files/article_main/uploads/2018/05/21/5b0305928c14a.jpeg");
-
-
-            bannerAdapter = new PagerBanners(getSupportFragmentManager(), urlImgs);
+            bannerAdapter = new PagerBanners(getSupportFragmentManager(), new ArrayList<Noticia>());
             pagerBanners.setAdapter(bannerAdapter);
+
+            pedirNoticias( carrera.getId() );
 
         } else {
             finish();
@@ -122,13 +101,16 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
     }
 
     private class PagerBanners extends FragmentPagerAdapter {
-        private ArrayList<Fragment> fragmentos = new ArrayList<>();
+        private ArrayList<Fragment> fragmentos;
+        private ArrayList<Noticia> banners = new ArrayList<>();
 
-        public PagerBanners(FragmentManager fm, ArrayList<String> urlImgs) {
+        public PagerBanners(FragmentManager fm, ArrayList<Noticia> banners) {
             super(fm);
 
-            for (String url : urlImgs) {
-                fragmentos.add( ImagenFragment.getInstancia(url) );
+            fragmentos = new ArrayList<>();
+
+            for (Noticia banner : banners) {
+                fragmentos.add( ImagenFragment.getInstanciaBanner(banner) );
             }
         }
 
@@ -151,5 +133,57 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
 
             return fragment;
         }
+
+        public void setBanners(ArrayList<Noticia> banners) {
+            fragmentos = new ArrayList<>();
+
+            for (Noticia banner : banners) {
+                fragmentos.add( ImagenFragment.getInstanciaBanner(banner) );
+            }
+
+            notifyDataSetChanged();
+        }
+    }
+
+    private void pedirNoticias(int idCarrera) {
+        cargando.setVisibility(View.VISIBLE);
+        contenedor.setVisibility(View.GONE);
+
+        servicioWeb = ServicioWebUtils.getServicioWeb(true);
+
+        Call<ResServer> resServerCall = servicioWeb.getNoticiaDeCarrera(idCarrera);
+
+        resServerCall.enqueue(new Callback<ResServer>() {
+            @Override
+            public void onResponse(Call<ResServer> call, Response<ResServer> response) {
+
+                if ( response.isSuccessful() ) {
+
+                    ResServer resServer = response.body();
+
+                    if ( resServer != null && resServer.isOkay() ) {
+                        ArrayList<Noticia> noticias = resServer.getNoticias();
+                        ArrayList<Noticia> banners = resServer.getBanners();
+
+                        if ( noticias != null ) noticiasAdapter.setNoticias(noticias);
+                        if ( banners != null ) {
+                            bannerAdapter.setBanners(banners);
+                            txtCantBanners.setText( banners.size() + " Banners" );
+                        }
+
+                    }
+                }
+
+                cargando.setVisibility(View.GONE);
+                contenedor.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<ResServer> call, Throwable t) {
+                Toast.makeText(NoticiasCarreraActivity.this, "No se pudo cargar la información", Toast.LENGTH_SHORT).show();
+                cargando.setVisibility(View.GONE);
+                contenedor.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

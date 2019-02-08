@@ -11,6 +11,8 @@ import android.widget.ImageView;
 
 import helpers.cristian.com.ubiety.R;
 import helpers.cristian.com.ubiety.glide.GlideApp;
+import helpers.cristian.com.ubiety.modelos.Noticia;
+import helpers.cristian.com.ubiety.utilidades.Constantes;
 
 
 public class ImagenFragment extends Fragment {
@@ -22,11 +24,22 @@ public class ImagenFragment extends Fragment {
     public ImagenFragment() {
     }
 
-    public static ImagenFragment getInstancia(String urlImg) {
+    public static ImagenFragment getInstanciaBloque(String urlImg) {
         ImagenFragment imagenFragment = new ImagenFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(ARG_URL_IMG, urlImg);
+
+        imagenFragment.setArguments(bundle);
+
+        return imagenFragment;
+    }
+
+    public static ImagenFragment getInstanciaBanner(Noticia noticia) {
+        ImagenFragment imagenFragment = new ImagenFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_URL_IMG, Constantes.URLs.IMAGEN_NOTICIA + noticia.getId() + ".jpg");
 
         imagenFragment.setArguments(bundle);
 

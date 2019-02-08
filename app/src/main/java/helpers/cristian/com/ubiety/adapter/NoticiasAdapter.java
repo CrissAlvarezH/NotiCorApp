@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import helpers.cristian.com.ubiety.R;
 import helpers.cristian.com.ubiety.glide.GlideApp;
 import helpers.cristian.com.ubiety.modelos.Noticia;
+import helpers.cristian.com.ubiety.utilidades.Constantes;
 
 public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.NoticiasViewHolder> {
 
@@ -54,7 +55,7 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.Notici
         Noticia noticia = noticias.get(pos);
 
         GlideApp.with(context)
-                .load( noticia.getUrlImagen() )
+                .load( Constantes.URLs.IMAGEN_NOTICIA + noticia.getId() + ".jpg" )
                 .into( holder.img );
 
         holder.txtTitulo.setText( noticia.getTitulo() );
@@ -71,5 +72,10 @@ public class NoticiasAdapter extends RecyclerView.Adapter<NoticiasAdapter.Notici
     @Override
     public int getItemCount() {
         return noticias.size();
+    }
+
+    public void setNoticias(ArrayList<Noticia> noticias) {
+        this.noticias = noticias;
+        notifyDataSetChanged();
     }
 }

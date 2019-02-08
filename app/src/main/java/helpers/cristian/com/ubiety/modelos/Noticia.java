@@ -26,8 +26,8 @@ public class Noticia implements Serializable {
     }
 
     public interface Tipos {
-        int BANNER = 1;
-        int NOTICIA = 2;
+        int NOTICIA = 1;
+        int BANNER = 2;
     }
 
     public int getId() {

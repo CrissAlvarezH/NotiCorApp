@@ -9,11 +9,9 @@ import retrofit2.http.Path;
 
 public interface ServicioWeb {
 
-    @FormUrlEncoded
-    @POST(Constantes.URLs.ACTUALIZAR_TOKEN)
-    Call<ResServer> actualizarToken(@Path("usuario") String usuario,
-                                    @Path("token") String token);
-
     @GET(Constantes.URLs.GET_INFO_INICIAL)
     Call<ResServer> getInfoInicial();
+
+    @GET(Constantes.URLs.GET_NOTICIA_CARRERA)
+    Call<ResServer> getNoticiaDeCarrera(@Path("id_carrera") int id);
 }

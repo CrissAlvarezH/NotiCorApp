@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Facultad;
+import helpers.cristian.com.ubiety.modelos.Noticia;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
 
 public class ResServer {
@@ -11,6 +12,24 @@ public class ResServer {
     private ArrayList<Facultad> facultades;
     private ArrayList<Notificacion> notificaciones;
     private ArrayList<Carrera> carreras;
+    private ArrayList<Noticia> noticias;
+    private ArrayList<Noticia> banners;
+
+    public ArrayList<Noticia> getBanners() {
+        return banners;
+    }
+
+    public void setBanners(ArrayList<Noticia> banners) {
+        this.banners = banners;
+    }
+
+    public ArrayList<Noticia> getNoticias() {
+        return noticias;
+    }
+
+    public void setNoticias(ArrayList<Noticia> noticias) {
+        this.noticias = noticias;
+    }
 
     public ArrayList<Carrera> getCarreras() {
         return carreras;
