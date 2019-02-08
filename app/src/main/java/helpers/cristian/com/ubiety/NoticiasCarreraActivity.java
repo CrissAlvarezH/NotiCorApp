@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +40,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
     private NoticiasAdapter noticiasAdapter;
     private PagerBanners bannerAdapter;
     private LinearLayout contenedor, cargando;
+    private SwipeRefreshLayout swipeRefresh;
 
     private ServicioWeb servicioWeb;
 
@@ -54,6 +56,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
 
             setToolbar( carrera.getNombre() );
 
+            swipeRefresh = findViewById(R.id.swipe_refresh);
             contenedor = findViewById(R.id.contenedor_noticias);
             cargando = findViewById(R.id.layout_cargando_noticias);
             pagerBanners = findViewById(R.id.pager_banners_carrera);
@@ -70,7 +73,28 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
             bannerAdapter = new PagerBanners(getSupportFragmentManager(), new ArrayList<Noticia>());
             pagerBanners.setAdapter(bannerAdapter);
 
-            pedirNoticias( carrera.getId() );
+            pedirNoticias( carrera.getId(), true );
+
+            swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pedirNoticias(carrera.getId(), false);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swipeRefresh.setRefreshing(false);
+                                }
+                            });
+                        }
+                    }).start();
+
+                }
+            });
 
         } else {
             finish();
@@ -145,9 +169,11 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
         }
     }
 
-    private void pedirNoticias(int idCarrera) {
-        cargando.setVisibility(View.VISIBLE);
-        contenedor.setVisibility(View.GONE);
+    private void pedirNoticias(int idCarrera, final boolean mostrarCargando) {
+        if (mostrarCargando) {
+            cargando.setVisibility(View.VISIBLE);
+            contenedor.setVisibility(View.GONE);
+        }
 
         servicioWeb = ServicioWebUtils.getServicioWeb(true);
 
@@ -174,15 +200,24 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
                     }
                 }
 
-                cargando.setVisibility(View.GONE);
-                contenedor.setVisibility(View.VISIBLE);
+                if (mostrarCargando) {
+                    cargando.setVisibility(View.GONE);
+                    contenedor.setVisibility(View.VISIBLE);
+                } else {
+                    swipeRefresh.setRefreshing(false);
+                }
             }
 
             @Override
             public void onFailure(Call<ResServer> call, Throwable t) {
                 Toast.makeText(NoticiasCarreraActivity.this, "No se pudo cargar la información", Toast.LENGTH_SHORT).show();
-                cargando.setVisibility(View.GONE);
-                contenedor.setVisibility(View.VISIBLE);
+
+                if (mostrarCargando) {
+                    cargando.setVisibility(View.GONE);
+                    contenedor.setVisibility(View.VISIBLE);
+                } else {
+                    swipeRefresh.setRefreshing(false);
+                }
             }
         });
     }
