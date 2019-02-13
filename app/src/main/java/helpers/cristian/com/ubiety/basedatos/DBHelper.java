@@ -3,7 +3,6 @@ package helpers.cristian.com.ubiety.basedatos;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.Nullable;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String NOMBRE_DB = "ubietybd";
@@ -32,7 +31,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLA_IMAGEN_BLOQUE = "imagen_bloque";
     public static final String TABLA_FACULTADES = "facultades";
     public static final String TABLA_CARRERAS = "carreras";
+    public static final String TABLA_LOGIN = "login";
     public static final String TABLA_NOTICIAS = "noticias";
+    public static final String TABLA_USUARIO_CARRERA = "usuario_carrera";
 
     public static final String ID = "id";
     public static final String TITULO = "titulo";
@@ -40,6 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TIPO = "tipo";
     public static final String FECHA = "fecha";
     public static final String HORA = "hora";
+    public static final String NOMBRES = "nombres";
     public static final String NOMBRE = "nombre";
     public static final String LATITUD = "latitud";
     public static final String LONGITUD = "longitud";
@@ -48,11 +50,17 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CODIGO = "codigo";
     public static final String URL_IMAGEN = "url_imagen";
     public static final String ENLACE = "enlace";
+    public static final String USUARIO = "usuario";
+    public static final String PASS = "pass";
+    public static final String APELLIDOS = "apellidos";
+    public static final String ROL = "rol";
     public static final String ID_BLOQUE = "id_bloque";
     public static final String ID_IMAGEN = "id_imagen";
     public static final String ID_ZONA = "id_zona";
     public static final String ID_POSICION = "id_posicion";
     public static final String ID_FACULTAD = "id_facultad";
+    public static final String ID_USUARIO = "id_usuario";
+    public static final String ID_CARRERA = "id_carrera";
     // [ FIN ] CONSTANTES PARA EL MANEJO DE LAS TABLAS
 
     @Override
@@ -64,6 +72,22 @@ public class DBHelper extends SQLiteOpenHelper {
          * que elijen un tab, la información mostrada de ahí en adelante, como lo detalles de los bloques,
          * de las facultades, etc.. serán cargadas al servidor
          */
+
+        String CREAR_TABLA_LOGIN = "CREATE TABLE "+TABLA_LOGIN+" ( " +
+                ID + " INTEGER PRIMARY KEY, " +
+                USUARIO + " TEXT NOT NULL, " +
+                PASS + " TEXT NOT NULL, " +
+                NOMBRES + " TEXT NOT NULL, " +
+                APELLIDOS + " TEXT NOT NULL, " +
+                ROL + " TEXT NOT NULL " +
+                ");";
+
+        String CREAR_TABLA_USUARIO_CARRERA = "CREATE TABLE "+TABLA_USUARIO_CARRERA+" ( " +
+                ID_USUARIO + " INTEGER NOT NULL, " +
+                ID_CARRERA + " INTEGER NOT NULL, " +
+                "FOREIGN KEY("+ID_USUARIO+") REFERENCES "+TABLA_LOGIN+"("+ID+"), " +
+                "FOREIGN KEY("+ID_CARRERA+") REFERENCES "+TABLA_CARRERAS+"("+ID+") " +
+                ");";
 
         String CREAR_TABLA_FACULTADES = "CREATE TABLE "+TABLA_FACULTADES+" ( " +
                 ID + " INTEGER PRIMARY KEY, " +
@@ -120,6 +144,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY("+ID_BLOQUE+") REFERENCES "+TABLA_BLOQUES+"("+ID+") " +
                 ");";
 
+        db.execSQL(CREAR_TABLA_LOGIN);
         db.execSQL(CREAR_TABLA_FACULTADES);
         db.execSQL(CREAR_TABLA_NOTIFICACIONES);
         db.execSQL(CREAR_TABLA_BLOQUE);
@@ -128,6 +153,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREAR_TABLA_IMAGENES);
         db.execSQL(CREAR_TABLA_IMAGEN_BLOQUE);
         db.execSQL(CREAR_TABLA_CARRERAS);
+        db.execSQL(CREAR_TABLA_USUARIO_CARRERA);
 
     }
 

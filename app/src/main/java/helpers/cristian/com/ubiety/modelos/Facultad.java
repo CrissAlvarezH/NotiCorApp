@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRE;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRES;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_FACULTADES;
 
 public class Facultad implements ModeloBaseDatos {

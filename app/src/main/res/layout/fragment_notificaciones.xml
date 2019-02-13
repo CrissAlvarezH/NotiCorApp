@@ -6,7 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".fragmentos.NotificacionesFragment">
 
+    <RelativeLayout
+        android:id="@+id/toolbar_fragment_notificaciones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Notificaciones"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/imgbtn_perfil"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/toolbar_fragment_notificaciones"
         android:id="@+id/recycler_notis"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

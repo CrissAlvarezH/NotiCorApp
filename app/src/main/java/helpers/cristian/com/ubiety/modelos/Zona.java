@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import java.io.Serializable;
 
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
-import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRE;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRES;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_ZONAS;
 
 public class Zona implements Serializable, ModeloBaseDatos {
@@ -22,7 +22,7 @@ public class Zona implements Serializable, ModeloBaseDatos {
         ContentValues values = new ContentValues();
 
         values.put(ID, id);
-        values.put(NOMBRE, nombre);
+        values.put(NOMBRES, nombre);
 
         return values;
     }

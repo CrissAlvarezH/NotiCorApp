@@ -12,6 +12,10 @@
         <item name="colorAccent">#fff</item>
     </style>
 
+    <style name="AccentColorPrimary" parent="AppTheme">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
     <style name="WindowBackgrounPrimary" parent="AppTheme">
         <item name="android:windowBackground">@color/colorPrimary</item>
     </style>

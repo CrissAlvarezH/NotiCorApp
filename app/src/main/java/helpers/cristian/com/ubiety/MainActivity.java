@@ -35,6 +35,7 @@ import helpers.cristian.com.ubiety.fragmentos.MapaFragment;
 import helpers.cristian.com.ubiety.fragmentos.NotificacionesFragment;
 import helpers.cristian.com.ubiety.glide.GlideApp;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
+import helpers.cristian.com.ubiety.modelos.Usuario;
 import helpers.cristian.com.ubiety.servicioweb.ResServer;
 import helpers.cristian.com.ubiety.servicioweb.ServicioWeb;
 import helpers.cristian.com.ubiety.servicioweb.ServicioWebUtils;
@@ -90,13 +91,16 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         dbManager = new DBManager(this);
 
-        FirebaseMessaging.getInstance().subscribeToTopic("Estudiantes")
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.v(TAG, "Suscrito a el topico de estudiantes");
-            }
-        });
+        if ( dbManager.getUsuarioLogeado() == null ) {
+
+            FirebaseMessaging.getInstance().subscribeToTopic("Estudiantes")
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.v(TAG, "Suscrito a el topico de estudiantes");
+                }
+            });
+        }
 
         contenedor = findViewById(R.id.container);
         splash = findViewById(R.id.splash);
@@ -337,7 +341,12 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         servicioWeb = ServicioWebUtils.getServicioWeb(true);
 
-        Call<ResServer> resServerCall = servicioWeb.getInfoInicial();
+        String rol = "ESTUDIANTE";// Por defecto
+
+        Usuario usuario = dbManager.getUsuarioLogeado();
+        if ( usuario != null ) rol = usuario.getRol();
+
+        Call<ResServer> resServerCall = servicioWeb.getInfoInicial(rol);
 
         resServerCall.enqueue(new Callback<ResServer>() {
             @Override

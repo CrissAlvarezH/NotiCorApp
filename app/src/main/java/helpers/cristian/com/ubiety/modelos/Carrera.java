@@ -3,11 +3,11 @@ package helpers.cristian.com.ubiety.modelos;
 import android.content.ContentValues;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID_FACULTAD;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRE;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRES;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_CARRERAS;
 
 public class Carrera implements ModeloBaseDatos, Serializable {

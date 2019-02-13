@@ -1,5 +1,6 @@
 package helpers.cristian.com.ubiety.basedatos;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,18 +11,28 @@ import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Facultad;
 import helpers.cristian.com.ubiety.modelos.ModeloBaseDatos;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
+import helpers.cristian.com.ubiety.modelos.Profesor;
+import helpers.cristian.com.ubiety.modelos.Usuario;
 
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.APELLIDOS;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.DESCRIPCION;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.FECHA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.HORA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID_CARRERA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID_FACULTAD;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRE;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRES;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.PASS;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.ROL;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_CARRERAS;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_FACULTADES;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_LOGIN;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_NOTIFICACIONES;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_USUARIO_CARRERA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TIPO;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TITULO;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.USUARIO;
 
 public class DBManager {
 
@@ -69,18 +80,79 @@ public class DBManager {
         return notificaciones;
     }
 
-    public void insertarModelo(ModeloBaseDatos modelo) {
+    public void borrarCredenciasles() {
         db = helper.getWritableDatabase();
 
-        db.insert(modelo.getNombreTabla(), null, modelo.toContentValues());
+        db.delete(TABLA_LOGIN, null, null);
+        db.delete(TABLA_USUARIO_CARRERA, null, null);
     }
 
-    public void insertarModelos(ArrayList<ModeloBaseDatos> modelos) {
+    public Usuario getUsuarioLogeado() {
+        db = helper.getReadableDatabase();
+
+        Cursor c = db.rawQuery(
+                "SELECT * FROM "+TABLA_LOGIN,
+                null
+        );
+
+        Usuario usuario = null;
+
+        if ( c.moveToFirst() ) {
+            usuario = new Usuario(
+                    c.getInt( c.getColumnIndex(ID) ),
+                    c.getString( c.getColumnIndex(USUARIO) ),
+                    c.getString( c.getColumnIndex(PASS) ),
+                    c.getString( c.getColumnIndex(NOMBRES) ),
+                    c.getString( c.getColumnIndex(APELLIDOS) ),
+                    c.getString( c.getColumnIndex(ROL) )
+            );
+        }
+
+        c.close();
+
+        return usuario;
+    }
+
+    public Carrera getCarreraDeUsuario() {
+        db = helper.getReadableDatabase();
+
+        Cursor c = db.rawQuery(
+                "SELECT * " +
+                        "FROM "+TABLA_USUARIO_CARRERA+", "+TABLA_CARRERAS+
+                        " WHERE "+TABLA_USUARIO_CARRERA+"."+ID_CARRERA+" = "+TABLA_CARRERAS+"."+ID,
+                null
+        );
+
+        Carrera carrera = null;
+
+        if ( c.moveToFirst() ) {
+            carrera = new Carrera(
+                    c.getInt( c.getColumnIndex(ID) ),
+                    c.getString( c.getColumnIndex(NOMBRE) )
+            );
+        }
+
+        c.close();
+
+        return carrera;
+    }
+
+    public long insertarModelo(ModeloBaseDatos modelo) {
         db = helper.getWritableDatabase();
 
-        for (ModeloBaseDatos modelo : modelos) {
-            db.insert(modelo.getNombreTabla(), null, modelo.toContentValues());
-        }
+        return db.insert(modelo.getNombreTabla(), null, modelo.toContentValues());
+    }
+
+    public long realizarInsert(String tabla, ContentValues values) {
+        db = helper.getWritableDatabase();
+
+        return db.insert(tabla, null, values);
+    }
+
+    public int limpiarTabla(String tabla) {
+        db = helper.getWritableDatabase();
+
+        return db.delete(tabla, null, null);
     }
 
     public void limpiarBD() {

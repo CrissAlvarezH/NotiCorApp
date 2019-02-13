@@ -6,14 +6,33 @@ import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Facultad;
 import helpers.cristian.com.ubiety.modelos.Noticia;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
+import helpers.cristian.com.ubiety.modelos.Profesor;
 
 public class ResServer {
     private boolean okay;
+    private String mensaje;
     private ArrayList<Facultad> facultades;
     private ArrayList<Notificacion> notificaciones;
     private ArrayList<Carrera> carreras;
     private ArrayList<Noticia> noticias;
     private ArrayList<Noticia> banners;
+    private Profesor profesor;
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
 
     public ArrayList<Noticia> getBanners() {
         return banners;

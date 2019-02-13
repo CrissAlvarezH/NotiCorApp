@@ -10,6 +10,7 @@ import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID_POSICION;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID_ZONA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRE;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.NOMBRES;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_BLOQUES;
 
 public class Bloque implements Serializable, ModeloBaseDatos {

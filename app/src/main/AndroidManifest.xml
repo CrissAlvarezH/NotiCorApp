@@ -37,7 +37,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".BloqueActivity" />
-        <activity android:name=".NoticiasCarreraActivity"></activity>
+        <activity android:name=".NoticiasCarreraActivity" />
+        <activity android:name=".PerfilActivity" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>
