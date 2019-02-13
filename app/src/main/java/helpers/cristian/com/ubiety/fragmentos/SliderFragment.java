@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import helpers.cristian.com.ubiety.R;
@@ -15,35 +14,35 @@ import helpers.cristian.com.ubiety.modelos.Noticia;
 import helpers.cristian.com.ubiety.utilidades.Constantes;
 
 
-public class ImagenFragment extends Fragment {
+public class SliderFragment extends Fragment {
 
     private final static String ARG_URL_IMG = "url_imagen";
 
     private ImageView imagen;
 
-    public ImagenFragment() {
+    public SliderFragment() {
     }
 
-    public static ImagenFragment getInstanciaBloque(String urlImg) {
-        ImagenFragment imagenFragment = new ImagenFragment();
+    public static SliderFragment getInstanciaBloque(String urlImg) {
+        SliderFragment sliderFragment = new SliderFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(ARG_URL_IMG, urlImg);
 
-        imagenFragment.setArguments(bundle);
+        sliderFragment.setArguments(bundle);
 
-        return imagenFragment;
+        return sliderFragment;
     }
 
-    public static ImagenFragment getInstanciaBanner(Noticia noticia) {
-        ImagenFragment imagenFragment = new ImagenFragment();
+    public static SliderFragment getInstanciaBanner(Noticia noticia) {
+        SliderFragment sliderFragment = new SliderFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString(ARG_URL_IMG, Constantes.URLs.IMAGEN_NOTICIA + noticia.getId() + ".jpg");
 
-        imagenFragment.setArguments(bundle);
+        sliderFragment.setArguments(bundle);
 
-        return imagenFragment;
+        return sliderFragment;
     }
 
     @Override

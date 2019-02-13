@@ -21,7 +21,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import helpers.cristian.com.ubiety.adapter.NoticiasAdapter;
-import helpers.cristian.com.ubiety.fragmentos.ImagenFragment;
+import helpers.cristian.com.ubiety.fragmentos.SliderFragment;
 import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Noticia;
 import helpers.cristian.com.ubiety.servicioweb.ResServer;
@@ -134,7 +134,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
             fragmentos = new ArrayList<>();
 
             for (Noticia banner : banners) {
-                fragmentos.add( ImagenFragment.getInstanciaBanner(banner) );
+                fragmentos.add( SliderFragment.getInstanciaBanner(banner) );
             }
         }
 
@@ -162,7 +162,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
             fragmentos = new ArrayList<>();
 
             for (Noticia banner : banners) {
-                fragmentos.add( ImagenFragment.getInstanciaBanner(banner) );
+                fragmentos.add( SliderFragment.getInstanciaBanner(banner) );
             }
 
             notifyDataSetChanged();

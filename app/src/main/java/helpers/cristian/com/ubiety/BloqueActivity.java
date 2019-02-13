@@ -22,7 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import java.util.ArrayList;
 
 import helpers.cristian.com.ubiety.adapter.SalonesAdapter;
-import helpers.cristian.com.ubiety.fragmentos.ImagenFragment;
+import helpers.cristian.com.ubiety.fragmentos.SliderFragment;
 import helpers.cristian.com.ubiety.modelos.Bloque;
 import helpers.cristian.com.ubiety.modelos.Salon;
 
@@ -149,7 +149,7 @@ public class BloqueActivity extends AppCompatActivity implements OnMapReadyCallb
             super(fm);
 
             for (String url : urlImgs) {
-                fragmentos.add( ImagenFragment.getInstanciaBloque(url) );
+                fragmentos.add( SliderFragment.getInstanciaBloque(url) );
             }
         }
 
