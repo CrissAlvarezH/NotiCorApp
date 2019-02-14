@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Facultad;
 import helpers.cristian.com.ubiety.modelos.ModeloBaseDatos;
+import helpers.cristian.com.ubiety.modelos.Noticia;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
 import helpers.cristian.com.ubiety.modelos.Profesor;
 import helpers.cristian.com.ubiety.modelos.Usuario;
 
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.APELLIDOS;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.DESCRIPCION;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.ENLACE;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.FECHA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.HORA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.ID;
@@ -28,10 +30,12 @@ import static helpers.cristian.com.ubiety.basedatos.DBHelper.ROL;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_CARRERAS;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_FACULTADES;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_LOGIN;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_NOTICIAS;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_NOTIFICACIONES;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TABLA_USUARIO_CARRERA;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TIPO;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.TITULO;
+import static helpers.cristian.com.ubiety.basedatos.DBHelper.URL_IMAGEN;
 import static helpers.cristian.com.ubiety.basedatos.DBHelper.USUARIO;
 
 public class DBManager {
@@ -78,6 +82,39 @@ public class DBManager {
         c.close();
 
         return notificaciones;
+    }
+
+    public ArrayList<Noticia> getNoticias() {
+        db = helper.getReadableDatabase();
+
+        Cursor c = db.rawQuery(
+                "SELECT * FROM "+TABLA_NOTICIAS+" ORDER BY "+ID+" DESC",
+                null
+        );
+
+        ArrayList<Noticia> noticias = new ArrayList<>();
+
+        if ( c.moveToFirst() ) {
+            do {
+                Noticia noticia = new Noticia(
+                        c.getInt( c.getColumnIndex(ID) ),
+                        c.getString( c.getColumnIndex(URL_IMAGEN) ),
+                        c.getString( c.getColumnIndex(TITULO) ),
+                        c.getString( c.getColumnIndex(DESCRIPCION) ),
+                        c.getString( c.getColumnIndex(FECHA) ),
+                        c.getString( c.getColumnIndex(ENLACE) ),
+                        c.getInt( c.getColumnIndex(TIPO) ),
+                        c.getInt( c.getColumnIndex(ID_CARRERA) )
+                );
+
+                noticias.add(noticia);
+
+            } while ( c.moveToNext() );
+        }
+
+        c.close();
+
+        return noticias;
     }
 
     public void borrarCredenciasles() {
@@ -161,6 +198,7 @@ public class DBManager {
         db.delete(TABLA_NOTIFICACIONES, null, null);
         db.delete(TABLA_CARRERAS, null, null);
         db.delete(TABLA_FACULTADES, null, null);
+        db.delete(TABLA_NOTICIAS, null, null);
     }
 
     public void insertarNotificaciones(ArrayList<Notificacion> notificaciones) {
@@ -178,6 +216,12 @@ public class DBManager {
     public void insertarCarreras(ArrayList<Carrera> carreras) {
         for (Carrera carrera : carreras) {
             insertarModelo(carrera);
+        }
+    }
+
+    public void insertarNoticias(ArrayList<Noticia> noticias) {
+        for (Noticia noticia : noticias) {
+            insertarModelo(noticia);
         }
     }
 

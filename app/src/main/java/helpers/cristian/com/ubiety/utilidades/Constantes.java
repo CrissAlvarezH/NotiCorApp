@@ -2,6 +2,8 @@ package helpers.cristian.com.ubiety.utilidades;
 
 public class Constantes {
 
+    public static final String TAG_DEBUG = "TagDebug";
+
     public interface URLs {
         String BASE_URL = "http://192.168.1.4/";
 

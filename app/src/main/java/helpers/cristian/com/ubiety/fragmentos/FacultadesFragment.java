@@ -4,11 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,8 @@ import helpers.cristian.com.ubiety.adapter.FacultadesAdapter;
 import helpers.cristian.com.ubiety.basedatos.DBManager;
 import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Facultad;
+import helpers.cristian.com.ubiety.modelos.Noticia;
+import helpers.cristian.com.ubiety.utilidades.Constantes;
 
 
 public class FacultadesFragment extends Fragment implements CarrerasAdapter.ListenerClick, FacultadesAdapter.ListenerClick {
@@ -31,6 +37,7 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
     private RecyclerView recyclerFacultades;
     private FacultadesAdapter facultadesAdapter;
     private DBManager dbManager;
+    private BannerAdapter bannerAdapter;
 
     public FacultadesFragment() {}
 
@@ -52,6 +59,12 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
         facultadesAdapter = new FacultadesAdapter(getContext(), facultades, this, this);
         recyclerFacultades.setAdapter(facultadesAdapter);
 
+        ArrayList<Noticia> noticias = dbManager.getNoticias();
+
+        bannerAdapter = new BannerAdapter(getChildFragmentManager(), noticias);
+        pagerNoticias.setAdapter(bannerAdapter);
+
+        Log.v(Constantes.TAG_DEBUG, "onCreateView facultadesFragment");
 
         return vista;
     }
@@ -68,5 +81,52 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
     public void clickFacultad(Facultad facultad, int posicion) {
         facultad.setMostrarCarreras( !facultad.isMostrarCarreras() );
         facultadesAdapter.setFacultad(facultad, posicion);
+    }
+
+    private class BannerAdapter extends FragmentPagerAdapter {
+        private ArrayList<Fragment> fragmentos;
+
+        public BannerAdapter(FragmentManager fm, ArrayList<Noticia> banners) {
+            super(fm);
+
+            fragmentos = new ArrayList<>();
+
+            for (Noticia banner : banners) {
+                fragmentos.add( SliderFragment.getInstanciaNoticia(banner) );
+                Log.v(Constantes.TAG_DEBUG, "Agregando un slider");
+            }
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            return fragmentos.get(i);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentos.size();
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+
+            fragmentos.set(position, fragment);// Actualizamos la instancia en memoria del fragment
+            Log.v(Constantes.TAG_DEBUG, "instantiateImten, pos: "+position);
+
+
+            return fragment;
+        }
+
+        public void setBanners(ArrayList<Noticia> banners) {
+            fragmentos = new ArrayList<>();
+
+            for (Noticia banner : banners) {
+                fragmentos.add( SliderFragment.getInstanciaNoticia(banner) );
+            }
+
+            notifyDataSetChanged();
+        }
     }
 }

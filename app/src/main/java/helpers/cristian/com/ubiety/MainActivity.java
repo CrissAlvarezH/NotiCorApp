@@ -92,8 +92,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         dbManager = new DBManager(this);
 
         if ( dbManager.getUsuarioLogeado() == null ) {
+            /*
+             * Si no está logueado se sobre-entiende que es un estudiante
+             */
 
-            FirebaseMessaging.getInstance().subscribeToTopic("Estudiantes")
+            FirebaseMessaging.getInstance().subscribeToTopic("ESTUDIANTE")
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -365,6 +368,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                                 dbManager.insertarFacultades( resServer.getFacultades() );
                                 dbManager.insertarNotificaciones( resServer.getNotificaciones() );
                                 dbManager.insertarCarreras( resServer.getCarreras() );
+                                dbManager.insertarNoticias( resServer.getNoticias() );
 
                                 runOnUiThread(new Runnable() {
                                     @Override

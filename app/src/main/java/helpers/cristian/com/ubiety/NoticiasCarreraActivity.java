@@ -126,7 +126,6 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
 
     private class PagerBanners extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragmentos;
-        private ArrayList<Noticia> banners = new ArrayList<>();
 
         public PagerBanners(FragmentManager fm, ArrayList<Noticia> banners) {
             super(fm);
@@ -134,7 +133,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
             fragmentos = new ArrayList<>();
 
             for (Noticia banner : banners) {
-                fragmentos.add( SliderFragment.getInstanciaBanner(banner) );
+                fragmentos.add( SliderFragment.getInstanciaNoticia(banner) );
             }
         }
 
@@ -162,7 +161,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
             fragmentos = new ArrayList<>();
 
             for (Noticia banner : banners) {
-                fragmentos.add( SliderFragment.getInstanciaBanner(banner) );
+                fragmentos.add( SliderFragment.getInstanciaNoticia(banner) );
             }
 
             notifyDataSetChanged();

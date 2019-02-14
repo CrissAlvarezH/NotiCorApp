@@ -110,6 +110,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 HORA + " TEXT NOT NULL " +
                 ");";
 
+        String CREAR_TABLA_NOTICIAS = "CREATE TABLE "+TABLA_NOTICIAS+" ( " +
+                ID + " INTEGER PRIMARY KEY, " +
+                URL_IMAGEN + " TEXT NOT NULL, " +
+                TITULO + " TEXT NOT NULL, " +
+                DESCRIPCION + " TEXT NOT NULL, " +
+                TIPO + " INTEGER NOT NULL, " +
+                FECHA + " TEXT NOT NULL, " +
+                ENLACE + " TEXT NOT NULL, " +
+                ID_CARRERA + " INTEGER NOT NULL, " +
+                "FOREIGN KEY("+ID_CARRERA+") REFERENCES "+TABLA_CARRERAS+"("+ID+") " +
+                ");";
+
         String CREAR_TABLA_BLOQUE = "CREATE TABLE "+TABLA_BLOQUES+" ( " +
                 ID + " INTEGER PRIMARY KEY," +
                 NOMBRE + " TEXT NOT NULL, " +
@@ -147,6 +159,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREAR_TABLA_LOGIN);
         db.execSQL(CREAR_TABLA_FACULTADES);
         db.execSQL(CREAR_TABLA_NOTIFICACIONES);
+        db.execSQL(CREAR_TABLA_NOTICIAS);
         db.execSQL(CREAR_TABLA_BLOQUE);
         db.execSQL(CREAR_TABLA_ZONA);
         db.execSQL(CREAR_TABLA_POSICIONES);

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragmentos.SliderFragment">
+
+    <ImageView
+        android:id="@+id/imagen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/layout_texto_slider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/negro_semitrans_gradient"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="50dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:id="@+id/txt_titulo_noticia_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Titulo de prueba"
+            android:textColor="#fafafa"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_descripcion_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripcion de prueba de la noticia Descripcion de prueba de la noticia Descripcion de prueba de la noticia Descripcion de prueba de la noticia "
+            android:textColor="#e6e4e4" />
+
+    </LinearLayout>
+
+</FrameLayout>
