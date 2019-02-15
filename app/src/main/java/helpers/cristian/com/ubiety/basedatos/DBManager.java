@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 
+import helpers.cristian.com.ubiety.modelos.Alerta;
 import helpers.cristian.com.ubiety.modelos.Carrera;
 import helpers.cristian.com.ubiety.modelos.Facultad;
 import helpers.cristian.com.ubiety.modelos.ModeloBaseDatos;
@@ -51,6 +52,101 @@ public class DBManager {
         db = helper.getWritableDatabase();
 
         return db.insert(noti.getNombreTabla(), null, noti.toContentValues());
+    }
+
+    public Carrera getCarrera(int id) {
+        db = helper.getReadableDatabase();
+
+        Cursor c = db.rawQuery(
+                "SELECT * FROM "+TABLA_CARRERAS+" WHERE "+ID+" = ? ",
+                new String[] { id+"" }
+        );
+
+        Carrera carrera = new Carrera(0, "");
+
+        if ( c.moveToFirst() ) {
+            carrera = new Carrera(
+                    c.getInt( c.getColumnIndex(ID) ),
+                    c.getString( c.getColumnIndex(NOMBRE) )
+            );
+        }
+
+        return carrera;
+    }
+
+    public ArrayList<Alerta> getAlertas() {
+        db = helper.getReadableDatabase();
+
+        ArrayList<Alerta> alertas = new ArrayList<>();
+
+        Cursor c = db.rawQuery(
+                "SELECT * FROM ( " +
+                            "SELECT noti.id, noti.titulo, noti.descripcion, noti.tipo, (noti.fecha || ' ' || noti.hora) fecha, null url_imagen, null carrera, 1 tipo_alarma FROM notificaciones noti " +
+                            "UNION " +
+                            "SELECT n.id, n.titulo, n.descripcion, n.tipo, n.fecha, n.url_imagen, c.nombre carrera, 2 tipo_alarma FROM noticias n, carreras c WHERE n.id_carrera = c.id AND n.tipo = 1 " +
+                            "UNION " +
+                            "SELECT n.id, n.titulo, n.descripcion, n.tipo, n.fecha, n.url_imagen, c.nombre carrera, 3 tipo_alarma FROM noticias n, carreras c WHERE n.id_carrera = c.id AND n.tipo = 2 " +
+                        ") R ORDER BY fecha DESC",
+                null
+        );
+
+        if ( c.moveToFirst() ) {
+            do {
+                Alerta alerta = new Alerta(
+                        c.getInt( c.getColumnIndex("id") ),
+                        c.getInt( c.getColumnIndex("tipo_alarma") )
+                );
+
+                switch ( alerta.getMotivo() ) {
+                    case Alerta.Motivos.NOTIFICACION:
+                        String[] fechaHora = c.getString( c.getColumnIndex("fecha") ).split(" ");
+
+                        Notificacion notificacion = new Notificacion(
+                                c.getInt( c.getColumnIndex("id") ),
+                                c.getString( c.getColumnIndex("titulo") ),
+                                c.getString( c.getColumnIndex("descripcion") ),
+                                fechaHora[0],
+                                fechaHora[1]
+                        );
+
+                        alerta.setNotificacion(notificacion);
+
+                        break;
+                    case Alerta.Motivos.NOTICIA:
+                        Noticia noticia = new Noticia();
+
+                        noticia.setId( c.getInt( c.getColumnIndex("id") ) );
+                        noticia.setTipo( c.getInt( c.getColumnIndex("tipo") ) );
+                        noticia.setTitulo( c.getString( c.getColumnIndex("titulo") ) );
+                        noticia.setDescripcion( c.getString( c.getColumnIndex("descripcion") ) );
+                        noticia.setFecha( c.getString( c.getColumnIndex("fecha") ) );
+
+                        Carrera carrera = new Carrera(0, c.getString( c.getColumnIndex("carrera") ));
+                        noticia.setCarrera( carrera );
+
+                        alerta.setNoticia(noticia);
+
+                        break;
+                    case Alerta.Motivos.BANNER:
+                        Noticia banner = new Noticia();
+
+                        banner.setId( c.getInt( c.getColumnIndex("id") ) );
+                        Carrera carreraBanner = new Carrera(0, c.getString( c.getColumnIndex("carrera") ));
+                        banner.setCarrera( carreraBanner );
+
+                        alerta.setBanner(banner);
+
+                        break;
+                }
+
+                alertas.add(alerta);
+
+            } while ( c.moveToNext() );
+        }
+
+        c.close();
+
+        return alertas;
     }
 
     public ArrayList<Notificacion> getNotificaciones() {

@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import java.util.Map;
 
 import helpers.cristian.com.ubiety.basedatos.DBManager;
+import helpers.cristian.com.ubiety.modelos.Alerta;
+import helpers.cristian.com.ubiety.modelos.Noticia;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
 import helpers.cristian.com.ubiety.utilidades.Constantes;
 
@@ -61,15 +63,39 @@ public class MensajeFirebaseService extends FirebaseMessagingService {
 
                 dbManager.insertarNotificacion(notificacion);
 
+                Alerta alertaNotificacion = new Alerta(notificacion.getId(), Alerta.Motivos.NOTIFICACION);
+                alertaNotificacion.setNotificacion(notificacion);
+
                 LocalBroadcastManager.getInstance(this).sendBroadcast(
-                        new Intent(Constantes.Acciones.AGREGAR_NOTIFICACION)
-                        .putExtra(Notificacion.class.getSimpleName(), notificacion)
+                        new Intent(Constantes.Acciones.AGREGAR_ALERTA)
+                        .putExtra(Alerta.class.getSimpleName(), alertaNotificacion)
                 );
 
                 lanzarNotifiacion(notificacion.getTitulo(), notificacion.getDescripcion(), notificacion.getTipo());
 
                 break;
             case "noticia":
+
+                Noticia noticia = gson.fromJson( data.get("cuerpo"), Noticia.class);
+
+                dbManager.insertarModelo(noticia);
+
+                lanzarNotifiacion(noticia.getTitulo(), noticia.getDescripcion(), 1);
+
+                Alerta alertaNoticia;
+
+                if ( noticia.getTipo() == Noticia.Tipos.NOTICIA ) {
+                    alertaNoticia = new Alerta(noticia.getId(),  Alerta.Motivos.NOTICIA);
+                    alertaNoticia.setNoticia(noticia);
+                } else {
+                    alertaNoticia = new Alerta(noticia.getId(),  Alerta.Motivos.BANNER);
+                    alertaNoticia.setBanner(noticia);
+                }
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(
+                        new Intent(Constantes.Acciones.AGREGAR_ALERTA)
+                                .putExtra(Alerta.class.getSimpleName(), alertaNoticia)
+                );
 
                 break;
         }

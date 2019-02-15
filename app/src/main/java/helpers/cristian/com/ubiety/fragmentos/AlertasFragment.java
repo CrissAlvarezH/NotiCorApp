@@ -1,8 +1,6 @@
 package helpers.cristian.com.ubiety.fragmentos;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,22 +14,23 @@ import java.util.ArrayList;
 
 import helpers.cristian.com.ubiety.PerfilActivity;
 import helpers.cristian.com.ubiety.R;
-import helpers.cristian.com.ubiety.adapter.NotificacionAdapter;
+import helpers.cristian.com.ubiety.adapter.AlertasAdapter;
 import helpers.cristian.com.ubiety.basedatos.DBManager;
+import helpers.cristian.com.ubiety.modelos.Alerta;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
 
 
-public class NotificacionesFragment extends Fragment implements NotificacionAdapter.ListenerNotificacion, View.OnClickListener {
+public class AlertasFragment extends Fragment implements AlertasAdapter.ListenerNotificacion, View.OnClickListener {
 
     private RecyclerView recyclerNotis;
-    private NotificacionAdapter notiAdapter;
+    private AlertasAdapter notiAdapter;
     private DBManager dbManager;
     private ImageView btnIrPerfil;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View vista = inflater.inflate(R.layout.fragment_notificaciones, container, false);
+        View vista = inflater.inflate(R.layout.fragment_alertas, container, false);
         dbManager = new DBManager(getContext());
 
         recyclerNotis = vista.findViewById(R.id.recycler_notis);
@@ -43,7 +42,7 @@ public class NotificacionesFragment extends Fragment implements NotificacionAdap
         recyclerNotis.setLayoutManager(lmNotis);
 
 
-        notiAdapter = new NotificacionAdapter(new ArrayList<Notificacion>(), this);
+        notiAdapter = new AlertasAdapter(getContext(), new ArrayList<Alerta>(), this);
         recyclerNotis.setAdapter(notiAdapter);
 
         refreshNotificaciones();
@@ -58,12 +57,22 @@ public class NotificacionesFragment extends Fragment implements NotificacionAdap
     }
 
     public void refreshNotificaciones() {
-        ArrayList<Notificacion> notis = dbManager.getNotificaciones();
-        notiAdapter.setNotificaciones(notis);
+        ArrayList<Alerta> notis = dbManager.getAlertas();
+        notiAdapter.setAlertas(notis);
     }
 
-    public void addNotificacion(Notificacion noti) {
-        notiAdapter.agregarNotificacion(noti);
+    public void addAlerta(Alerta alerta) {
+
+        if ( alerta.getMotivo() == Alerta.Motivos.BANNER ){
+            alerta.getBanner().setCarrera( dbManager.getCarrera( alerta.getBanner().getIdCarrera() ) );
+        }
+
+        if ( alerta.getMotivo() == Alerta.Motivos.NOTICIA ) {
+            alerta.getNoticia().setCarrera( dbManager.getCarrera( alerta.getNoticia().getIdCarrera() ) );
+        }
+
+        notiAdapter.agregarAlarma(alerta);
+        recyclerNotis.smoothScrollToPosition(0);
     }
 
     @Override

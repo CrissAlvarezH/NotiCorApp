@@ -62,7 +62,7 @@ public class Notificacion implements Serializable, ModeloBaseDatos {
     }
 
     public static class Tipos {
-        public static final int NOTICIA = 1;
+        public static final int MENSAJE = 1;
         public static final int ADVERTENCIA = 2;
         public static final int PELIGRO = 3;
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:background="@android:color/white"
     android:layout_height="match_parent"
-    tools:context=".fragmentos.NotificacionesFragment">
+    tools:context=".fragmentos.AlertasFragment">
 
     <RelativeLayout
         android:id="@+id/toolbar_fragment_notificaciones"

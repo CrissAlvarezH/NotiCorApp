@@ -24,6 +24,9 @@ public class Noticia implements Serializable, ModeloBaseDatos {
     private String enlace;
     private int tipo;
     private int idCarrera;
+    private Carrera carrera;
+
+    public Noticia() {}
 
     public Noticia(int id, String urlImagen, String titulo, String descripcion,
                    String fecha, String enlace, int tipo, int idCarrera) {
@@ -61,6 +64,22 @@ public class Noticia implements Serializable, ModeloBaseDatos {
     public interface Tipos {
         int NOTICIA = 1;
         int BANNER = 2;
+    }
+
+    public int getIdCarrera() {
+        return idCarrera;
+    }
+
+    public void setIdCarrera(int idCarrera) {
+        this.idCarrera = idCarrera;
+    }
+
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
     }
 
     public int getId() {

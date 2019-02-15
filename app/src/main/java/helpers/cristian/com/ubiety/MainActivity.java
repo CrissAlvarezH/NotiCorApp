@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,13 +13,11 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,8 +29,9 @@ import helpers.cristian.com.ubiety.basedatos.DBManager;
 import helpers.cristian.com.ubiety.fragmentos.BloquesFragment;
 import helpers.cristian.com.ubiety.fragmentos.FacultadesFragment;
 import helpers.cristian.com.ubiety.fragmentos.MapaFragment;
-import helpers.cristian.com.ubiety.fragmentos.NotificacionesFragment;
+import helpers.cristian.com.ubiety.fragmentos.AlertasFragment;
 import helpers.cristian.com.ubiety.glide.GlideApp;
+import helpers.cristian.com.ubiety.modelos.Alerta;
 import helpers.cristian.com.ubiety.modelos.Notificacion;
 import helpers.cristian.com.ubiety.modelos.Usuario;
 import helpers.cristian.com.ubiety.servicioweb.ResServer;
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         super.onResume();
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction( Constantes.Acciones.AGREGAR_NOTIFICACION );
+        intentFilter.addAction( Constantes.Acciones.AGREGAR_ALERTA);
 
         receiver = new ReceiverPrincipal();
 
@@ -155,7 +153,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             add(POS_MAPA, new MapaFragment());
             add(POS_FACULTADES, new FacultadesFragment());
             add(POS_BLOQUES, new BloquesFragment());
-            add(POS_NOTI, new NotificacionesFragment());
+            add(POS_NOTI, new AlertasFragment());
         }};
 
         public PagerAdapter(FragmentManager fm) {
@@ -318,15 +316,15 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             if ( intent != null && intent.getAction() != null ) {
 
                 switch ( intent.getAction() ) {
-                    case Constantes.Acciones.AGREGAR_NOTIFICACION:
+                    case Constantes.Acciones.AGREGAR_ALERTA:
 
                         try {
 
-                            Notificacion noti = (Notificacion) intent.getSerializableExtra(Notificacion.class.getSimpleName());
+                            Alerta alerta = (Alerta) intent.getSerializableExtra(Alerta.class.getSimpleName());
 
-                            NotificacionesFragment notiFragment = (NotificacionesFragment) pagerAdapter.getItem(POS_NOTI);
+                            AlertasFragment alertaFragment = (AlertasFragment) pagerAdapter.getItem(POS_NOTI);
 
-                            notiFragment.addNotificacion(noti);
+                            alertaFragment.addAlerta(alerta);
 
                         }catch (NullPointerException e){}
                         catch (ClassCastException ex) {}
