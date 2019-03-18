@@ -16,6 +16,7 @@ public class Constantes {
     public interface Acciones {
         String ACTUALIZAR_NOTIFICACIONES = "actualizarnotificaciones";
         String AGREGAR_ALERTA = "agregaralerta";
+        String AGREGAR_NOTICIA = "agregarnoticia";
     }
 
 }

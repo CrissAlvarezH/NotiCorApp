@@ -93,6 +93,10 @@ public class MensajeFirebaseService extends FirebaseMessagingService {
                 }
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(
+                        new Intent(Constantes.Acciones.AGREGAR_NOTICIA)
+                );
+
+                LocalBroadcastManager.getInstance(this).sendBroadcast(
                         new Intent(Constantes.Acciones.AGREGAR_ALERTA)
                                 .putExtra(Alerta.class.getSimpleName(), alertaNoticia)
                 );

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,8 @@ import helpers.cristian.com.ubiety.utilidades.Constantes;
 
 
 public class FacultadesFragment extends Fragment implements CarrerasAdapter.ListenerClick, FacultadesAdapter.ListenerClick {
+
+    private static final String TAG = "FragmentoFacultades";
 
     private ViewPager pagerNoticias;
     private RecyclerView recyclerFacultades;
@@ -64,11 +67,24 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
         bannerAdapter = new BannerAdapter(getChildFragmentManager(), noticias);
         pagerNoticias.setAdapter(bannerAdapter);
 
+        if ( noticias.isEmpty() ) pagerNoticias.setVisibility(View.GONE);
+        else pagerNoticias.setVisibility(View.VISIBLE);
         Log.v(Constantes.TAG_DEBUG, "onCreateView facultadesFragment");
 
         return vista;
     }
 
+    public void refreshBanners() {
+
+        ArrayList<Noticia> noticias = dbManager.getNoticias();
+        bannerAdapter.setBanners(noticias);
+
+        pagerNoticias.setCurrentItem(0);
+        Log.v(TAG, "Refresh banners "+noticias.size());
+
+        if ( noticias.isEmpty() ) pagerNoticias.setVisibility(View.GONE);
+        else pagerNoticias.setVisibility(View.VISIBLE);
+    }
 
     @Override
     public void clickCarrera(Carrera carrera, int posicion) {
@@ -83,7 +99,7 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
         facultadesAdapter.setFacultad(facultad, posicion);
     }
 
-    private class BannerAdapter extends FragmentPagerAdapter {
+    private class BannerAdapter extends FragmentStatePagerAdapter {
         private ArrayList<Fragment> fragmentos;
 
         public BannerAdapter(FragmentManager fm, ArrayList<Noticia> banners) {
@@ -117,6 +133,11 @@ public class FacultadesFragment extends Fragment implements CarrerasAdapter.List
 
 
             return fragment;
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return POSITION_NONE;
         }
 
         public void setBanners(ArrayList<Noticia> banners) {

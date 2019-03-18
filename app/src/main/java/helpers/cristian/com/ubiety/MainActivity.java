@@ -26,13 +26,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 
 import helpers.cristian.com.ubiety.basedatos.DBManager;
-import helpers.cristian.com.ubiety.fragmentos.BloquesFragment;
 import helpers.cristian.com.ubiety.fragmentos.FacultadesFragment;
-import helpers.cristian.com.ubiety.fragmentos.MapaFragment;
 import helpers.cristian.com.ubiety.fragmentos.AlertasFragment;
 import helpers.cristian.com.ubiety.glide.GlideApp;
 import helpers.cristian.com.ubiety.modelos.Alerta;
-import helpers.cristian.com.ubiety.modelos.Notificacion;
 import helpers.cristian.com.ubiety.modelos.Usuario;
 import helpers.cristian.com.ubiety.servicioweb.ResServer;
 import helpers.cristian.com.ubiety.servicioweb.ServicioWeb;
@@ -67,6 +64,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction( Constantes.Acciones.AGREGAR_ALERTA);
+        intentFilter.addAction( Constantes.Acciones.AGREGAR_NOTICIA);
 
         receiver = new ReceiverPrincipal();
 
@@ -228,7 +226,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                     case Constantes.Acciones.AGREGAR_ALERTA:
 
                         try {
-
+                            // Actualizamos la alertas
                             Alerta alerta = (Alerta) intent.getSerializableExtra(Alerta.class.getSimpleName());
 
                             AlertasFragment alertaFragment = (AlertasFragment) pagerAdapter.getItem(POS_NOTI);
@@ -237,6 +235,18 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
                         }catch (NullPointerException e){}
                         catch (ClassCastException ex) {}
+
+                        break;
+                    case Constantes.Acciones.AGREGAR_NOTICIA:
+
+                        try {
+
+                            FacultadesFragment facultadesFragment = (FacultadesFragment) pagerAdapter.getItem(POS_FACULTADES);
+
+                            facultadesFragment.refreshBanners();
+
+                        }catch (NullPointerException e){ e.printStackTrace(); }
+                        catch (ClassCastException ex) { ex.printStackTrace(); }
 
                         break;
                 }

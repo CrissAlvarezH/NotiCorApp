@@ -31,6 +31,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.view.View.GONE;
+
 public class NoticiasCarreraActivity extends AppCompatActivity {
 
     private Carrera carrera;
@@ -40,6 +42,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
     private NoticiasAdapter noticiasAdapter;
     private PagerBanners bannerAdapter;
     private LinearLayout contenedor, cargando;
+    private TextView txtNoHayNoticias;
     private SwipeRefreshLayout swipeRefresh;
 
     private ServicioWeb servicioWeb;
@@ -62,6 +65,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
             pagerBanners = findViewById(R.id.pager_banners_carrera);
             txtCantBanners = findViewById(R.id.txt_cant_banners_carrera);
             recyclerNoticias = findViewById(R.id.recycler_noticias_carreras);
+            txtNoHayNoticias = findViewById(R.id.txt_no_hay_noticias);
 
             RecyclerView.LayoutManager lmNoticias = new LinearLayoutManager(this);
             recyclerNoticias.setLayoutManager(lmNoticias);
@@ -95,6 +99,12 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
 
                 }
             });
+
+            if ( noticiasAdapter.getItemCount() > 0 ) txtNoHayNoticias.setVisibility(GONE);
+            else txtNoHayNoticias.setVisibility(View.VISIBLE);
+
+            if ( bannerAdapter.getCount() > 0 ) pagerBanners.setVisibility(View.VISIBLE);
+            else pagerBanners.setVisibility(GONE);
 
         } else {
             finish();
@@ -171,7 +181,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
     private void pedirNoticias(int idCarrera, final boolean mostrarCargando) {
         if (mostrarCargando) {
             cargando.setVisibility(View.VISIBLE);
-            contenedor.setVisibility(View.GONE);
+            contenedor.setVisibility(GONE);
         }
 
         servicioWeb = ServicioWebUtils.getServicioWeb(true);
@@ -196,11 +206,16 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
                             txtCantBanners.setText( banners.size() + " Banners" );
                         }
 
+                        if ( noticiasAdapter.getItemCount() > 0 ) txtNoHayNoticias.setVisibility(GONE);
+                        else txtNoHayNoticias.setVisibility(View.VISIBLE);
+
+                        if ( bannerAdapter.getCount() > 0 ) pagerBanners.setVisibility(View.VISIBLE);
+                        else pagerBanners.setVisibility(GONE);
                     }
                 }
 
                 if (mostrarCargando) {
-                    cargando.setVisibility(View.GONE);
+                    cargando.setVisibility(GONE);
                     contenedor.setVisibility(View.VISIBLE);
                 } else {
                     swipeRefresh.setRefreshing(false);
@@ -212,7 +227,7 @@ public class NoticiasCarreraActivity extends AppCompatActivity {
                 Toast.makeText(NoticiasCarreraActivity.this, "No se pudo cargar la información", Toast.LENGTH_SHORT).show();
 
                 if (mostrarCargando) {
-                    cargando.setVisibility(View.GONE);
+                    cargando.setVisibility(GONE);
                     contenedor.setVisibility(View.VISIBLE);
                 } else {
                     swipeRefresh.setRefreshing(false);
