@@ -103,6 +103,7 @@ public class DBManager {
 
                         Notificacion notificacion = new Notificacion(
                                 c.getInt( c.getColumnIndex("id") ),
+                                c.getInt( c.getColumnIndex("tipo") ),
                                 c.getString( c.getColumnIndex("titulo") ),
                                 c.getString( c.getColumnIndex("descripcion") ),
                                 fechaHora[0],
