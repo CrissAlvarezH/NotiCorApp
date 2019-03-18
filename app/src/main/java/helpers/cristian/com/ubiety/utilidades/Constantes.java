@@ -5,7 +5,7 @@ public class Constantes {
     public static final String TAG_DEBUG = "TagDebug";
 
     public interface URLs {
-        String BASE_URL = "http://192.168.1.4/";
+        String BASE_URL = "http://142.93.71.94/";
 
         String GET_INFO_INICIAL = "NotiServer/src/index.php/base/info-inicial/{rol}";
         String GET_NOTICIA_CARRERA = "NotiServer/src/index.php/noticias/noti-and-banners/{id_carrera}";

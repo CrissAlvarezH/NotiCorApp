@@ -46,12 +46,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     private final String TAG = "ActividadPrincipal";
 
-    private final int POS_MAPA = 0;
-    private final int POS_FACULTADES = 1;
-    private final int POS_BLOQUES = 2;
-    private final int POS_NOTI = 3;
+    private final int POS_FACULTADES = 0;
+    private final int POS_NOTI = 1;
 
-    private ImageView imgItemMapa, imgItemFacultades, imgItemBloques, imgItemNoti;
+    private ImageView imgItemFacultades, imgItemNoti;
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
 
@@ -105,34 +103,20 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         contenedor = findViewById(R.id.container);
         splash = findViewById(R.id.splash);
-        imgItemMapa = findViewById(R.id.bottom_item_map);
         imgItemFacultades = findViewById(R.id.bottom_item_facultades);
-        imgItemBloques = findViewById(R.id.bottom_item_bloques);
         imgItemNoti = findViewById(R.id.bottom_item_noti);
         pager = findViewById(R.id.pager_pages);
 
         pedirInfoInicial();
 
-        imgItemMapa.setOnClickListener(this);
         imgItemFacultades.setOnClickListener(this);
-        imgItemBloques.setOnClickListener(this);
         imgItemNoti.setOnClickListener(this);
 
         // Por defecto el mapa está seleccionado
         GlideApp.with(this)
                 .load("")
-                .placeholder(R.drawable.google_maps_colores)
-                .into(imgItemMapa);
-
-        GlideApp.with(this)
-                .load("")
-                .placeholder(R.drawable.noticias_outline)
+                .placeholder(R.drawable.noticias_colores)
                 .into(imgItemFacultades);
-
-        GlideApp.with(this)
-                .load("")
-                .placeholder(R.drawable.edificios_outline)
-                .into(imgItemBloques);
 
         GlideApp.with(this)
                 .load("")
@@ -144,15 +128,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         pager.setAdapter(pagerAdapter);
 
         pager.addOnPageChangeListener(listenerCambioDePagina);
-        pager.setCurrentItem(POS_MAPA);
+        pager.setCurrentItem(POS_FACULTADES);
     }
 
     private class PagerAdapter extends FragmentPagerAdapter {
 
         private ArrayList<Fragment> fragmentos = new ArrayList<Fragment>() {{
-            add(POS_MAPA, new MapaFragment());
             add(POS_FACULTADES, new FacultadesFragment());
-            add(POS_BLOQUES, new BloquesFragment());
             add(POS_NOTI, new AlertasFragment());
         }};
 
@@ -188,68 +170,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         @Override
         public void onPageSelected(int pos) {
             switch (pos) {
-                case POS_MAPA:
-
-                    GlideApp.with(MainActivity.this)
-                            .load("")
-                            .placeholder(R.drawable.google_maps_colores)
-                            .into(imgItemMapa);
-
-                    GlideApp.with(MainActivity.this)
-                            .load("")
-                            .placeholder(R.drawable.noticias_outline)
-                            .into(imgItemFacultades);
-
-                    GlideApp.with( MainActivity.this )
-                            .load("")
-                            .placeholder(R.drawable.edificios_outline)
-                            .into(imgItemBloques);
-
-                    GlideApp.with(MainActivity.this)
-                            .load("")
-                            .placeholder(R.drawable.noti_outline)
-                            .into(imgItemNoti);
-
-                    break;
                 case POS_FACULTADES:
 
-                    GlideApp.with(MainActivity.this)
-                            .load("")
-                            .placeholder(R.drawable.google_maps_outline)
-                            .into(imgItemMapa);
 
                     GlideApp.with(MainActivity.this)
                             .load("")
                             .placeholder(R.drawable.noticias_colores)
                             .into(imgItemFacultades);
-
-                    GlideApp.with( MainActivity.this )
-                            .load("")
-                            .placeholder(R.drawable.edificios_outline)
-                            .into(imgItemBloques);
-
-                    GlideApp.with(MainActivity.this)
-                            .load("")
-                            .placeholder(R.drawable.noti_outline)
-                            .into(imgItemNoti);
-
-                    break;
-                case POS_BLOQUES:
-
-                    GlideApp.with(MainActivity.this)
-                            .load("")
-                            .placeholder(R.drawable.google_maps_outline)
-                            .into(imgItemMapa);
-
-                    GlideApp.with(MainActivity.this)
-                            .load("")
-                            .placeholder(R.drawable.noticias_outline)
-                            .into(imgItemFacultades);
-
-                    GlideApp.with( MainActivity.this )
-                            .load("")
-                            .placeholder(R.drawable.edificios_colores)
-                            .into(imgItemBloques);
 
                     GlideApp.with(MainActivity.this)
                             .load("")
@@ -261,18 +188,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
                     GlideApp.with(MainActivity.this)
                             .load("")
-                            .placeholder(R.drawable.google_maps_outline)
-                            .into(imgItemMapa);
-
-                    GlideApp.with(MainActivity.this)
-                            .load("")
                             .placeholder(R.drawable.noticias_outline)
                             .into(imgItemFacultades);
-
-                    GlideApp.with( MainActivity.this )
-                            .load("")
-                            .placeholder(R.drawable.edificios_outline)
-                            .into(imgItemBloques);
 
                     GlideApp.with(MainActivity.this)
                             .load("")
@@ -290,16 +207,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch ( view.getId() ) {
-            case R.id.bottom_item_map:
-                pager.setCurrentItem(POS_MAPA);
-
-                break;
             case R.id.bottom_item_facultades:
                 pager.setCurrentItem(POS_FACULTADES);
-
-                break;
-            case R.id.bottom_item_bloques:
-                pager.setCurrentItem(POS_BLOQUES);
 
                 break;
             case R.id.bottom_item_noti:
