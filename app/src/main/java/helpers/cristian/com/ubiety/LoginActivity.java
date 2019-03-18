@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
         GlideApp.with(this)
                 .load("")
-                .placeholder(R.drawable.letra_u)
+                .placeholder(R.drawable.logo_unicor)
                 .into(imgLogo);
 
         servicioWeb = ServicioWebUtils.getServicioWeb(true);

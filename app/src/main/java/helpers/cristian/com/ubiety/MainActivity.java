@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private final int POS_FACULTADES = 0;
     private final int POS_NOTI = 1;
 
-    private ImageView imgItemFacultades, imgItemNoti;
+    private ImageView imgItemFacultades, imgItemNoti, imgSplash;
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
 
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         contenedor = findViewById(R.id.container);
         splash = findViewById(R.id.splash);
+        imgSplash = findViewById(R.id.img_splash);
         imgItemFacultades = findViewById(R.id.bottom_item_facultades);
         imgItemNoti = findViewById(R.id.bottom_item_noti);
         pager = findViewById(R.id.pager_pages);
@@ -121,6 +122,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 .placeholder(R.drawable.noti_outline)
                 .into(imgItemNoti);
 
+        // Imagen del Splash
+        GlideApp.with(this)
+                .load("")
+                .placeholder(R.drawable.logo_unicor)
+                .into(imgSplash);
 
         pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);

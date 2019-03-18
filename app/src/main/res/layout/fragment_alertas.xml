@@ -35,6 +35,13 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/txt_no_hay_notificaciones"
+        android:text="No hay notificaciones"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_below="@id/toolbar_fragment_notificaciones"
         android:id="@+id/recycler_notis"

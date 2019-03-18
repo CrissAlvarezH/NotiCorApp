@@ -15,8 +15,9 @@
 
         <ImageView
             android:id="@+id/img_logo_login"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:src="@drawable/logo_unicor"
             android:layout_marginTop="25dp" />
 
         <LinearLayout

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class AlertasFragment extends Fragment implements AlertasAdapter.Listener
     private AlertasAdapter notiAdapter;
     private DBManager dbManager;
     private ImageView btnIrPerfil;
+    private TextView txtNoHayNotis;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +37,7 @@ public class AlertasFragment extends Fragment implements AlertasAdapter.Listener
 
         recyclerNotis = vista.findViewById(R.id.recycler_notis);
         btnIrPerfil = vista.findViewById(R.id.imgbtn_perfil);
+        txtNoHayNotis = vista.findViewById(R.id.txt_no_hay_notificaciones);
 
         btnIrPerfil.setOnClickListener(this);
 
@@ -59,6 +62,9 @@ public class AlertasFragment extends Fragment implements AlertasAdapter.Listener
     public void refreshNotificaciones() {
         ArrayList<Alerta> notis = dbManager.getAlertas();
         notiAdapter.setAlertas(notis);
+
+        if ( notiAdapter.getItemCount() > 0 ) txtNoHayNotis.setVisibility(View.GONE);
+        else txtNoHayNotis.setVisibility(View.VISIBLE);
     }
 
     public void addAlerta(Alerta alerta) {
@@ -73,6 +79,9 @@ public class AlertasFragment extends Fragment implements AlertasAdapter.Listener
 
         notiAdapter.agregarAlarma(alerta);
         recyclerNotis.smoothScrollToPosition(0);
+
+        if ( notiAdapter.getItemCount() > 0 ) txtNoHayNotis.setVisibility(View.GONE);
+        else txtNoHayNotis.setVisibility(View.VISIBLE);
     }
 
     @Override
