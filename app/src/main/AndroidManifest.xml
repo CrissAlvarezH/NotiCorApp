@@ -11,6 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/net_config_security"
         android:theme="@style/AppTheme">
         <service android:name=".services.MensajeFirebaseService">
             <intent-filter>
